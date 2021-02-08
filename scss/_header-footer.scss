@@ -1,0 +1,222 @@
+/* Mobile first! */
+@import "./mixins-variables";
+
+header {
+    position: sticky;
+    height: 3rem;
+    z-index: 2;
+    background: $nav-bg;
+}
+
+.menu-btn {
+    position: absolute;
+    z-index: 3;
+    right: 1rem;
+    top: 1rem;
+    height: 20px;
+    width: 28px;
+    padding: 5px;
+    cursor: pointer;
+
+    &-burger {
+        position: absolute;
+        right: 0;
+        top: 0.5rem;
+        width: 28px;
+        height: 3px;
+        background: white;
+        @include transition-ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            width: 28px;
+            height: 3px;
+            background: white;
+            @include transition-ease;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            width: 20px;
+            height: 3px;
+            background: white;
+            @include transition-ease;
+        }
+
+        &.open {
+            visibility: visible;
+            transform: rotate(720deg);
+            background: transparent;
+
+            &::before {
+                transform: rotate(45deg) translate(5px, 8px);
+            }
+
+            &::after {
+                width: 28px;
+                transform: rotate(-45deg) translate(3px, -7px);
+            }
+        }
+    }
+}
+
+
+nav {
+
+    @include transition-ease;
+    visibility: hidden;
+    font-size: 1.5rem;
+    height: inherit;
+
+    &.open {
+        visibility: visible;
+        background: $nav-bg;
+    }
+}
+
+.menu-nav {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+
+    &.open {
+        transform: translateY(0);
+        @include transition-ease;
+        background: $nav-bg;
+    }
+        
+    &-link {
+        text-decoration: none;
+        color: $nav-link-color;
+        margin: 1rem 0 1rem 0;
+
+        @include selected-effect;
+    }
+
+    &-item {
+        padding: 2rem;
+        transform: translateX(100vw);
+        @include transition-ease;
+        list-style: none;
+
+        &.open {
+            transform: translateX(0);
+            @include transition-ease;
+        }
+    }
+}
+
+.dropdown {
+    position: relative;
+    display: inherit;
+
+    &-content {
+        display: none;
+        position: absolute;
+        top: 7rem;
+        width: 100%;
+        background: $nav-bg;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    &-link {
+        text-decoration: none;
+        color: $nav-link-color;
+        list-style: none;
+    }
+
+    &-item {
+        padding: 1rem;
+
+        @include selected-effect;
+    }
+}
+
+.show {
+    display: block;
+}
+
+.dropbtn {
+    cursor: pointer;
+}
+
+.log-in {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(100vw);
+    @include transition-ease;
+    position: relative;
+    z-index: 1;
+
+    &.open {
+        @include transition-ease;
+        transform: translateX(0);
+        background: $nav-bg;
+    }
+}
+
+.log-in-btn {
+    box-shadow: inset #000 -1px -1px 2px 1px;
+    border-radius: 0.25rem;
+    border: 1px solid black;
+    color: $topic-link-color;
+    background: $home-bg;
+    font-size: 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    width: 50%;
+    padding: 0.5rem;
+    margin: 0.5rem 0 0.5rem 0;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+        background: #427aa1;
+        @include transition-ease;
+    }
+
+    &:active {
+        transform: scale(.95);
+    }
+}
+
+#search-form {
+    padding: 1rem 0 1rem 0;
+    display: grid;
+
+    input {
+        height: 2.5rem;
+        font-size: 1rem;
+    }
+
+    button {
+        height: 2.5rem;
+        margin-top: 1rem;
+        color: $topic-link-color;
+        background: $home-bg;
+        box-shadow: inset #000 -1px -1px 2px 1px;
+        border: 1px solid lightgrey;
+        cursor: pointer;
+
+        &:hover {
+            background: #427aa1;
+            @include transition-ease;
+        }
+    }
+}
+
+footer {
+    background: $nav-bg;
+    color: #FFF;
+    text-align: center;
+}

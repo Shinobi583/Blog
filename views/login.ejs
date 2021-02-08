@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Great Divide | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body id="login">
+
+    <%- include("partials/navbar") %>
+
+    <main>
+        <section class="hero">
+            <h1>Login to The Great Divide</h1>
+        </section>
+
+        <section>
+            <form id="login-form" action="/login" method="post">
+                <label for="login-field">Username or Email Address</label>
+                <input type="text" name="login" id="login-field" class="forms-text" required>
+
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="forms-text" required>
+
+                <input type="submit" name="commit" value="Sign In" class="log-in-btn">
+            </form>
+        </section>
+
+    </main>
+
+    <%- include("partials/footer") %>
+
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

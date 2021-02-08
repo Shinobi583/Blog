@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= posts[0].title %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body id="article">
+
+    <%- include("partials/navbar") %>
+
+    <main>
+        <section class="hero">
+            <h1><%= posts[0].title %></h1>
+            <p><%= posts[0].details %></p>
+        </section>
+        
+        <article>
+
+            <section>
+
+                <p>
+                    <%= posts[0].content %>
+                </p>
+
+            </section>
+
+            <section>
+                
+                <p>More content here if needed. Add inputs to create the sections. For each new paragraph, add blank spaces in between
+                    the paragraphs and concat as one string with the spaces.
+                </p>
+
+            </section>
+
+        </article>
+
+    </main>
+
+    <%- include("partials/footer") %>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

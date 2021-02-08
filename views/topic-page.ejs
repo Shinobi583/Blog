@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= final[0].topic %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body id="topic-page">
+
+    <%- include("partials/navbar") %>
+
+    <main>
+        <section class="hero">
+            <h1><%= final[0].topic %></h1>
+        </section>
+
+        <% for (let i = 0; i < final.length; i++)
+            { %>
+
+        <section class="topic-grid">
+
+            <a href="/topics/<%= final[i].tslug %>/<%= final[i].slug %>" class="article-link">
+                <div class="article"><%= final[i].title %></div>
+            </a>
+
+        </section>
+
+                    <% } %>
+
+    </main>
+
+    <%- include("partials/footer") %>
+
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

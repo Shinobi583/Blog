@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a new Article</title>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body id="new-article">
+
+    <%- include("partials/navbar") %>
+
+        <main>
+            <form action="" method="post">
+                <section>
+                    <!--Title-->
+                    <label for="">Title of Article</label>
+                    <input type="text" name="title" required>
+                    <!--Description/Details-->
+                    <label for="">Short description of Article</label>
+                    <input type="text" name="description" required>
+                </section>
+                
+                <article>
+                
+                    <section>
+                        <label for="">Main Content</label>
+                        <textarea class="paragraph" name="paragraph" cols="60" rows="10" required></textarea>
+                    </section>
+
+                    <button id="add-paragraph">Add Paragraph</button>
+                
+                </article>
+
+                <input type="submit" value="Post Article">
+            </form>
+        </main>
+
+    <%- include("partials/footer") %>
+
+    <script src="/js/new-article.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

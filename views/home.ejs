@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Great Divide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/main.js" defer></script>
+</head>
+<body id="home">
+
+    <%- include("partials/navbar") %>
+
+    <main>
+        <section class="hero">
+            <h1>Let's Talk Tech</h1>
+            <p>Welcome to Let's Talk Tech!</p>
+        </section>
+        
+        <section class="home-main">
+
+            <% for (let i=0; i < posts.length; i++) { %>
+            
+                <a href="/articles/<%= posts[i].slug %>" class="article-link">
+                    <div class="article">
+                        <%= posts[i].title %>
+                    </div>
+                </a>
+                <% } %>
+
+        </section>
+
+    </main>
+
+    <%- include("partials/footer") %>
+</body>
+</html>

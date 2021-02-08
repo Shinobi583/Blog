@@ -1,0 +1,34 @@
+@mixin transition-ease {
+    transition: all 250ms ease-in-out;
+}
+
+@mixin selected-effect {
+    &:hover {
+        color: $topic-link-color;
+    }
+
+    &:after {
+        display:block;
+        content: '';
+        border-bottom: solid 3px $topic-hover;
+        transform: scaleX(0);
+        @include transition-ease;
+    }
+
+    &:hover:after {
+        transform: scaleX(1);
+        @include transition-ease;
+    }
+}
+
+$nav-bg: #0e1d0c;
+$nav-link-color: #679436;
+$nav-hover-color: #f2e8cf;
+$nav-hover-bg: #4f772d;
+$home-bg: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+$topic-link-color: #FFF;
+$topic-card-bg: #132a13;
+$topic-hover: #4f772d;
+$article-card-bg: #4f772d;
+$article-hover: #90a955;
+$article-link-color: #000;

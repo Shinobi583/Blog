@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body id="topics">
+
+    <%- include("partials/navbar") %>
+
+    <main>
+        <section class="hero">
+            <h1>Articles</h1>
+            <p>Explore the various articles I've written!</p>
+        </section>
+
+        <section class="home-main">
+        
+            <% for (let i=0; i < posts.length; i++) { %>
+        
+                <a href="/<%= posts[i].slug %>" class="article-link">
+                    <div class="article">
+                        <%= posts[i].title %>
+                    </div>
+                </a>
+                <% } %>
+        
+        </section>
+
+    </main>
+
+    <%- include("partials/footer") %>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

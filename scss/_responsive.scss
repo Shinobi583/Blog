@@ -1,0 +1,139 @@
+// Tablets
+@media all and (min-width: 640px) {
+
+    .article-link {
+        margin-bottom: 1rem;
+        width: 75%;
+    }
+
+    .article {
+        padding: 0;
+    }
+
+    #home {
+
+        main {
+
+            .home-main {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    }
+
+    #topics {
+
+        main {
+
+            .topic-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    }
+
+    #topic-page {
+
+        main {
+
+            .topic-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    }
+}
+
+
+/* @media all and (min-width: 768px) {
+    
+} */
+
+
+// Laptops
+@media all and (min-width: 1024px) {
+
+}
+
+
+// Desktops
+@media all and (min-width: 1280px) {
+
+    .menu-btn {
+        visibility: hidden;
+    }
+
+    nav {
+        visibility: visible;
+        display: flex;
+    }
+
+    #navbar {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    .menu-nav {
+        transform: translateY(0);
+        margin: 0 0 0 2rem;
+        align-items: center;
+
+        &-link {
+            margin: 0;
+        }
+
+        &-item {
+            padding: 0.5rem 0 0.5rem 0;
+            transform: translateX(0);
+            width: 7rem;
+        }
+    }
+
+    .dropdown {
+        margin: 0 0 0 3rem;
+
+        &-content {
+            top: 3rem;
+            width: auto;
+        }
+
+        &-item {
+            width: 5rem;
+        }
+    }
+
+    .log-in {
+        transform: translateX(0);
+        flex-direction: row;
+        margin-left: auto;
+    }
+
+    .log-in-btn {
+        width: auto;
+        margin: 0 1rem 0 0;
+    }
+
+    #search-form {
+        padding: 0;
+        margin: 0 1rem 0 1rem;
+        display: inherit;
+
+        button {
+            margin: 0 0 0 1rem;
+        }
+    }
+
+    .article-link {
+        margin-bottom: 1rem;
+        width: 50%;
+    }
+
+    .article {
+        padding: 0;
+    }
+
+    #login, #signup {
+
+        input[type=submit] {
+            margin: 0.5rem 0 0.5rem 0;
+        }
+    }
+}
