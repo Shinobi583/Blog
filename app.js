@@ -4,11 +4,13 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
+const path = require("path");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "/views"));
 
 let connection = mysql.createConnection({
     host: "localhost",
