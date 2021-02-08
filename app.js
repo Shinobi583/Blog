@@ -79,6 +79,12 @@ app.get("/new-article", (req, res) => {
     res.render("new-article");
 });
 
+// Must be at end for all other routes because of only one response for HTTP. So if it gets here, send this.
+app.get('*', (req, res) => {
+
+    res.send("The page you are looking for doesn't exist! Sorry!");
+});
+
 app.listen(3000, () => {
     console.log("Server has started on port 3000");
 });
