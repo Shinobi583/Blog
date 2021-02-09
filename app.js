@@ -63,6 +63,21 @@ app.get("/articles/:article", (req, res) => {
     });
 });
 
+app.get("/search", (req, res) => {
+
+    let { q } = req.query;
+    let query = `SELECT title, slug, updated_at
+    FROM posts
+    WHERE title LIKE "%${q}%"
+    ORDER BY updated_at DESC;`;
+
+    connection.query(query, function (err, result) {
+        if (err) throw err;
+        let posts = result;
+        res.render("search", { posts: posts });
+    });
+});
+
 /* Change login to be something for admin only? Perhaps on the bottom of page or something. */
 
 app.get("/login", (req, res) => {
@@ -75,13 +90,13 @@ app.post("/login", (req, res) => {
     res.redirect("/");
 });
 
-// Temp route, should be under users id/articles/new. articles part being a page where you can see all of your posts.
+// Temp route, should be under users id/articles/new.
 app.get("/new-article", (req, res) => {
 
     res.render("new-article");
 });
 
-// Must be at end for all other routes because of only one response for HTTP. So if it gets here, send this.
+// Must be at end for all other routes because of only one response for HTTP.
 app.get('*', (req, res) => {
 
     res.send("The page you are looking for doesn't exist! Sorry!");
