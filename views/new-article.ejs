@@ -14,28 +14,29 @@
     <%- include("partials/navbar") %>
 
         <main>
-            <form action="" method="post">
+            <form action="/new-article" method="post">
+                <input type="hidden" name="articleCount" value="<%= count %>">
                 <section>
                     <!--Title-->
                     <label for="">Title of Article</label>
                     <input type="text" name="title" required>
                     <!--Description/Details-->
                     <label for="">Short description of Article</label>
-                    <input type="text" name="description" required>
+                    <input type="text" name="details" required>
                 </section>
                 
                 <article>
                 
                     <section>
                         <label for="">Main Content</label>
-                        <textarea class="paragraph" name="paragraph" cols="60" rows="10" required></textarea>
+                        <textarea id="content" class="paragraph" name="content1" cols="60" rows="10" required></textarea>
                     </section>
 
                     <button id="add-paragraph">Add Paragraph</button>
                 
                 </article>
 
-                <input type="submit" value="Post Article">
+                <input id="submit" type="submit" value="Post Article">
             </form>
         </main>
 

@@ -1,7 +1,11 @@
-document.querySelector("#add-paragraph").addEventListener("click", function (event) {
-    event.preventDefault();
+document.querySelector("#add-paragraph").addEventListener("click", function (e) {
+    e.preventDefault();
     addParagraph();
 });
+
+// Escape special characters
+
+let i = 2;
 
 
 function addParagraph() {
@@ -9,7 +13,7 @@ function addParagraph() {
     let newSection = document.createElement("section");
     let newTextArea = document.createElement("textarea");
     
-    setAttributes(newTextArea, { "class": "paragraph", "cols": "60", "rows": "10" });
+    setAttributes(newTextArea, { "class": "paragraph", "name": `content${i++}`, "cols": "60", "rows": "10" });
 
     newSection.appendChild(newTextArea);
 

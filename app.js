@@ -52,8 +52,10 @@ app.get("/articles/:article", (req, res) => {
 
     let slug = req.params.article;
 
-    let q = `SELECT title, details, content
+    let q = `SELECT title, details, paragraphs.content AS content
     FROM posts
+    JOIN paragraphs
+    ON posts.id = paragraphs.posts_id
     WHERE slug = "${slug}";`;
 
     connection.query(q, function (err, result) {
@@ -87,13 +89,50 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
 
-    res.redirect("/");
+    res.redirect('/');
 });
 
-// Temp route, should be under users id/articles/new.
+// Temp routes, should be under users id/articles/new for both get and post.
 app.get("/new-article", (req, res) => {
 
-    res.render("new-article");
+    let q = `SELECT COUNT(*) AS COUNT FROM posts;`;
+    connection.query(q, function (err, result) {
+        if (err) throw err;
+        let count = result[0].COUNT;
+        res.render("new-article", { count: count });
+    });
+});
+
+app.post("/new-article", (req, res) => {
+
+    let post = req.body;
+    let regex = new RegExp(' ', 'g');
+    let slug = post.title.replace(regex, '-').toLowerCase();
+    let userId = 1; // the user id should be a variable based on logged in.
+
+    let q = `INSERT INTO posts(title, slug, details, users_id)
+    VALUES("${post.title}", "${slug}", "${post.details}", ${userId});`;
+
+    connection.query(q, function (err, result) {
+        if (err) throw err;
+    });
+
+    let pgraphs = [];
+    let keys = Object.keys(post);
+    for (let i = 2; i < keys.length; i++) {
+        if (keys[i].slice(0, 7) === "content") {
+            pgraphs.push(post[keys[i]]);
+        }
+    }
+    let count = parseInt(post.articleCount);
+    for (let i = 0; i < pgraphs.length; i++) {
+        let q = `INSERT INTO paragraphs(content, place, posts_id)
+        VALUES("${pgraphs[i]}", ${i}, ${count + 1});`;
+        connection.query(q, function (err, result) {
+            if (err) throw err;
+        });
+    }
+    res.redirect("/articles");
 });
 
 // Must be at end for all other routes because of only one response for HTTP.

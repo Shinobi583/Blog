@@ -32,6 +32,15 @@ CREATE TABLE posts
     PRIMARY KEY(id)
 );
 
+CREATE TABLE paragraphs
+(
+    content LONGTEXT NOT NULL,
+    place INT NOT NULL,
+    posts_id BIGINT NOT NULL,
+    FOREIGN KEY(posts_id) REFERENCES posts(id) ON DELETE CASCADE,
+    PRIMARY KEY(place, posts_id)
+);
+
 /* Showing most recent post in the group */
 SELECT * FROM
 (SELECT DISTINCT title, topics_id, created_at
