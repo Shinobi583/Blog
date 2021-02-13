@@ -3,14 +3,11 @@ const burger = document.querySelector(".menu-btn-burger");
 const nav = document.querySelector("nav");
 const menuNav = document.querySelector(".menu-nav");
 const navItems = document.querySelectorAll(".menu-nav-item");
-const dropBtn = document.querySelector(".dropbtn");
-const dropdown = document.querySelector("#dropdown");
 const navForm = document.querySelector(".log-in");
 let showMenu = false;
 
 
 menuBtn.addEventListener("click", toggleMenu);
-dropBtn.addEventListener("click", showDropdown);
 
 
 function toggleMenu() {
@@ -34,8 +31,4 @@ function toggleMenu() {
         });
         showMenu = false;
     }
-}
-
-function showDropdown() {
-    dropdown.classList.toggle("show");
 }
