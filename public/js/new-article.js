@@ -15,7 +15,7 @@ document.querySelector("article").addEventListener("click", function (e) {
 
 // Escape special characters
 
-let i = 2;
+let pNum = 2;
 
 
 function addParagraphAndSection() {
@@ -26,7 +26,7 @@ function addParagraphAndSection() {
     let deletePara = document.createElement("button");
     deletePara.textContent = "Delete Paragraph";
     
-    setAttributes(newTextArea, { "class": "paragraph", "name": `content${i++}`, "cols": "60", "rows": "10" });
+    setAttributes(newTextArea, { "class": "paragraph", "name": `content${pNum++}`, "cols": "60", "rows": "10" });
     setAttributes(deleteSect, { "class": "del-section" });
     setAttributes(deletePara, { "class": "del-paragraph" });
 

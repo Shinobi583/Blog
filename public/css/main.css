@@ -434,6 +434,17 @@ main {
           justify-content: center;
 }
 
+#error {
+  background: -webkit-gradient(linear, left bottom, left top, from(#0f2027), color-stop(#203a43), to(#2c5364));
+  background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+  background-repeat: no-repeat;
+}
+
+#error main {
+  text-align: center;
+  color: #FFF;
+}
+
 #login, #signup {
   background: -webkit-gradient(linear, left bottom, left top, from(#0f2027), color-stop(#203a43), to(#2c5364));
   background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
@@ -490,15 +501,15 @@ main {
     padding: 0;
   }
   #home main .home-main {
-    -ms-grid-columns: (1fr)2;
+    -ms-grid-columns: (1fr)[2];
         grid-template-columns: repeat(2, 1fr);
   }
   #topics main .topic-grid {
-    -ms-grid-columns: (1fr)2;
+    -ms-grid-columns: (1fr)[2];
         grid-template-columns: repeat(2, 1fr);
   }
   #topic-page main .topic-grid {
-    -ms-grid-columns: (1fr)2;
+    -ms-grid-columns: (1fr)[2];
         grid-template-columns: repeat(2, 1fr);
   }
 }

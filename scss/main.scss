@@ -133,6 +133,16 @@ main {
     }
 }
 
+#error {
+    background: $home-bg;
+    background-repeat: no-repeat;
+
+    main {
+        text-align: center;
+        color: #FFF;
+    }
+}
+
 #login, #signup {
     background: $home-bg;
     background-attachment: fixed;

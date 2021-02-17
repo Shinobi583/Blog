@@ -29,9 +29,14 @@ app.get('/', (req, res) => {
     ORDER BY updated_at DESC LIMIT 5;`;
 
     connection.query(q, function (err, result) {
-        if (err) throw err;
-        let posts = result; // final is Array of objects
-        res.render("home", { posts: posts });
+        if (err) {
+            console.log(err);
+            res.render("error");
+        }
+        else {
+            let posts = result;
+            res.render("home", { posts: posts });
+        }
     });
 });
 
@@ -42,9 +47,14 @@ app.get("/articles", (req, res) => {
     ORDER BY updated_at DESC;`;
 
     connection.query(q, function (err, result) {
-        if (err) throw err;
-        let posts = result;
-        res.render("all-articles", { posts: posts });
+        if (err) {
+            console.log(err);
+            res.render("error");
+        }
+        else {
+            let posts = result;
+            res.render("all-articles", { posts: posts });
+        }
     });
 });
 
@@ -59,9 +69,14 @@ app.get("/articles/:article", (req, res) => {
     WHERE slug = "${slug}";`;
 
     connection.query(q, function (err, result) {
-        if (err) throw err;
-        let posts = result;
-        res.render("article", { posts: posts });
+        if (err) {
+            console.log(err);
+            res.render("error");
+        }
+        else {
+            let posts = result;
+            res.render("article", { posts: posts });
+        }
     });
 });
 
@@ -74,9 +89,14 @@ app.get("/search", (req, res) => {
     ORDER BY updated_at DESC;`;
 
     connection.query(query, function (err, result) {
-        if (err) throw err;
-        let posts = result;
-        res.render("search", { posts: posts });
+        if (err) {
+            console.log(err);
+            res.render("error");
+        }
+        else {
+            let posts = result;
+            res.render("search", { posts: posts });
+        }
     });
 });
 
@@ -97,9 +117,14 @@ app.get("/new-article", (req, res) => {
 
     let q = `SELECT COUNT(*) AS COUNT FROM posts;`;
     connection.query(q, function (err, result) {
-        if (err) throw err;
-        let count = result[0].COUNT;
-        res.render("new-article", { count: count });
+        if (err) {
+            console.log(err);
+            res.render("error");
+        }
+        else {
+            let count = result[0].COUNT;
+            res.render("new-article", { count: count });
+        }
     });
 });
 
@@ -110,13 +135,17 @@ app.post("/new-article", (req, res) => {
     let slug = post.title.replace(regex, '-').toLowerCase();
     let userId = 1; // the user id should be a variable based on logged in.
 
+    // Insert into posts first, paragraphs table depends on it
     let q = `INSERT INTO posts(title, slug, details, users_id)
     VALUES("${post.title}", "${slug}", "${post.details}", ${userId});`;
 
     connection.query(q, function (err, result) {
-        if (err) throw err;
+        if (err) {
+            console.log(err);
+        }
     });
 
+    // Grab all the paragraphs
     let pgraphs = [];
     let keys = Object.keys(post);
     for (let i = 2; i < keys.length; i++) {
@@ -124,12 +153,15 @@ app.post("/new-article", (req, res) => {
             pgraphs.push(post[keys[i]]);
         }
     }
+    // Grab count of previous article count to insert
     let count = parseInt(post.articleCount);
     for (let i = 0; i < pgraphs.length; i++) {
         let q = `INSERT INTO paragraphs(content, place, posts_id)
         VALUES("${pgraphs[i]}", ${i}, ${count + 1});`;
         connection.query(q, function (err, result) {
-            if (err) throw err;
+            if (err) {
+                console.log(err);
+            }
         });
     }
     res.redirect("/articles");
