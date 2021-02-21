@@ -10,34 +10,8 @@
         padding: 0;
     }
 
-    #home {
-
-        main {
-
-            .home-main {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    }
-
-    #topics {
-
-        main {
-
-            .topic-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    }
-
-    #topic-page {
-
-        main {
-
-            .topic-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+    .d-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -87,20 +61,7 @@
         }
     }
 
-    .dropdown {
-        margin: 0 0 0 3rem;
-
-        &-content {
-            top: 3rem;
-            width: auto;
-        }
-
-        &-item {
-            width: 5rem;
-        }
-    }
-
-    .log-in {
+    .search {
         transform: translateX(0);
         flex-direction: row;
         margin-left: auto;
@@ -130,7 +91,7 @@
         padding: 0;
     }
 
-    #login, #signup {
+    #login {
 
         input[type=submit] {
             margin: 0.5rem 0 0.5rem 0;

@@ -7,6 +7,8 @@ html, body {
     box-sizing: border-box;
     margin: 0;
     min-height: 100vh;
+    background: $home-bg;
+    background-repeat: no-repeat;
 }
 
 .hero {
@@ -52,16 +54,20 @@ html, body {
     padding: 0.5rem;
 }
 
+.d-grid {
+    display: grid;
+}
+
 main {
     margin: 10px;
+    text-align: center;
+    color: #FFF;
 }
 
 
 #home {
-    background: $home-bg;
-    background-repeat: no-repeat;
 
-    ul > .menu-nav-link {
+    .menu-nav-link:first-of-type {
         color: $topic-link-color;
 
         &:after {
@@ -71,85 +77,25 @@ main {
             transform: scaleX(1);
         }
     }
-
-    main {
-        text-align: center;
-        color: #FFF;
-
-        .home-main {
-            display: grid;
-        }
-
-        .topic-main {
-            display: grid;
-        }
-    }
 }
 
+#articles {
 
-#topics {
-    background: $home-bg;
-    background-repeat: no-repeat;
+    .menu-nav-link:nth-of-type(2) {
+        color: $topic-link-color;
 
-    main {
-        text-align: center;
-        color: #FFF;
-            
-            .topic-grid {
-                display: grid;
-            }
-    }
-}
-
-
-#topic-page {
-    background: $home-bg;
-    background-repeat: no-repeat;
-
-    main {
-        text-align: center;
-        color: #FFF;
-
-        .topic-grid {
-            display: grid;
+        &:after {
+            display:block;
+            content: '';
+            border-bottom: solid 3px $topic-hover;
+            transform: scaleX(1);
         }
     }
 }
 
-
-#article {
-    
-    main {
-
-        .hero {
-            text-align: center;
-            text-shadow: none;
-        }
-
-        .img-block {
-            display: flex;
-            justify-content: center;
-        }
-    }
-}
-
-#error {
-    background: $home-bg;
-    background-repeat: no-repeat;
-
-    main {
-        text-align: center;
-        color: #FFF;
-    }
-}
-
-#login, #signup {
-    background: $home-bg;
-    background-attachment: fixed;
-    color: #FFF;
+#login {
 
     h1 {
-        text-align: center;
         letter-spacing: inherit;
     }
 
@@ -158,7 +104,7 @@ main {
     }
 }
 
-#login-form, #signupForm {
+#login-form {
     display: grid;
     margin: auto;
     max-width: 500px;
@@ -167,15 +113,6 @@ main {
 .forms-text {
     height: 1.5rem;
     font-size: inherit;
-}
-
-#signup-info {
-    background: $home-bg;
-    background-attachment: fixed;
-
-    main {
-        text-align: center;
-    }
 }
 
 .warning {

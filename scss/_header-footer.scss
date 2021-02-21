@@ -114,42 +114,11 @@ nav {
     }
 }
 
-.dropdown {
-    position: relative;
-    display: inherit;
-
-    &-content {
-        display: none;
-        position: absolute;
-        top: 7rem;
-        width: 100%;
-        background: $nav-bg;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 1;
-    }
-
-    &-link {
-        text-decoration: none;
-        color: $nav-link-color;
-        list-style: none;
-    }
-
-    &-item {
-        padding: 1rem;
-
-        @include selected-effect;
-    }
-}
-
 .show {
     display: block;
 }
 
-.dropbtn {
-    cursor: pointer;
-}
-
-.log-in {
+.search {
     display: flex;
     flex-direction: column;
     align-items: center;
