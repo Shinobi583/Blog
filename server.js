@@ -109,7 +109,7 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
 
-    res.redirect('/', { title: "The Great Divide" });
+    res.redirect('/');
 });
 
 // Temp routes, should be under users id/articles/new for both get and post.
