@@ -31,11 +31,11 @@ app.get('/', (req, res) => {
     connection.query(q, function (err, result) {
         if (err) {
             console.log(err);
-            res.render("error");
+            res.render("error", { title: "Can't find page" });
         }
         else {
             let posts = result;
-            res.render("home", { posts: posts });
+            res.render("home", { posts: posts, title: "The Great Divide" });
         }
     });
 });
@@ -49,11 +49,11 @@ app.get("/articles", (req, res) => {
     connection.query(q, function (err, result) {
         if (err) {
             console.log(err);
-            res.render("error");
+            res.render("error", { title: "Can't find page" });
         }
         else {
             let posts = result;
-            res.render("all-articles", { posts: posts });
+            res.render("all-articles", { posts: posts, title: "Articles" });
         }
     });
 });
@@ -71,11 +71,11 @@ app.get("/articles/:article", (req, res) => {
     connection.query(q, function (err, result) {
         if (err) {
             console.log(err);
-            res.render("error");
+            res.render("error", { title: "Can't find page" });
         }
         else {
-            let posts = result;
-            res.render("article", { posts: posts });
+            let post = result[0];
+            res.render("article", { ...post, title: post.title });
         }
     });
 });
@@ -91,11 +91,11 @@ app.get("/search", (req, res) => {
     connection.query(query, function (err, result) {
         if (err) {
             console.log(err);
-            res.render("error");
+            res.render("error", { title: "Can't find page" });
         }
         else {
             let posts = result;
-            res.render("search", { posts: posts });
+            res.render("search", { posts: posts, title: "The Great Divide | Search" });
         }
     });
 });
@@ -104,12 +104,12 @@ app.get("/search", (req, res) => {
 
 app.get("/login", (req, res) => {
 
-    res.render("login");
+    res.render("login", { title: "Login" });
 });
 
 app.post("/login", (req, res) => {
 
-    res.redirect('/');
+    res.redirect('/', { title: "The Great Divide" });
 });
 
 // Temp routes, should be under users id/articles/new for both get and post.
@@ -119,11 +119,11 @@ app.get("/new-article", (req, res) => {
     connection.query(q, function (err, result) {
         if (err) {
             console.log(err);
-            res.render("error");
+            res.render("error", { title: "Can't find page" });
         }
         else {
             let count = result[0].COUNT;
-            res.render("new-article", { count: count });
+            res.render("new-article", { count: count, title: "New Article" });
         }
     });
 });
@@ -164,7 +164,7 @@ app.post("/new-article", (req, res) => {
             }
         });
     }
-    res.redirect("/articles");
+    res.redirect("/articles", { title: "Articles" });
 });
 
 // Must be at end for all other routes because of only one response for HTTP.
