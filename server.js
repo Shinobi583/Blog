@@ -58,6 +58,60 @@ app.get("/articles", (req, res) => {
     });
 });
 
+app.post("/articles", (req, res) => {
+
+    let post = req.body;
+    let regex = new RegExp(' ', 'g');
+    let slug = post.title.replace(regex, '-').toLowerCase();
+    let userId = 1; // the user id should be a variable based on logged in.
+
+    // Insert into posts first, paragraphs table depends on it
+    let q = `INSERT INTO posts(title, slug, details, users_id)
+    VALUES("${post.title}", "${slug}", "${post.details}", ${userId});`;
+
+    connection.query(q, function (err, result) {
+        if (err) {
+            console.log(err);
+        }
+    });
+
+    // Grab all the paragraphs
+    let pgraphs = [];
+    let keys = Object.keys(post);
+    for (let i = 2; i < keys.length; i++) {
+        if (keys[i].slice(0, 7) === "content") {
+            pgraphs.push(post[keys[i]]);
+        }
+    }
+    // Grab count of previous article count to insert
+    let count = parseInt(post.articleCount);
+    for (let i = 0; i < pgraphs.length; i++) {
+        let q = `INSERT INTO paragraphs(content, place, posts_id)
+        VALUES("${pgraphs[i]}", ${i}, ${count + 1});`;
+        connection.query(q, function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+        });
+    }
+    res.redirect("/articles", { title: "Articles" });
+});
+
+app.get("/articles/new", (req, res) => {
+
+    let q = `SELECT COUNT(*) AS COUNT FROM posts;`;
+    connection.query(q, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.render("error", { title: "Can't find page" });
+        }
+        else {
+            let count = result[0].COUNT;
+            res.render("new-article", { count: count, title: "New Article" });
+        }
+    });
+});
+
 app.get("/articles/:article", (req, res) => {
 
     let slug = req.params.article;
@@ -110,61 +164,6 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
 
     res.redirect('/');
-});
-
-// Temp routes, should be under users id/articles/new for both get and post.
-app.get("/new-article", (req, res) => {
-
-    let q = `SELECT COUNT(*) AS COUNT FROM posts;`;
-    connection.query(q, function (err, result) {
-        if (err) {
-            console.log(err);
-            res.render("error", { title: "Can't find page" });
-        }
-        else {
-            let count = result[0].COUNT;
-            res.render("new-article", { count: count, title: "New Article" });
-        }
-    });
-});
-
-app.post("/new-article", (req, res) => {
-
-    let post = req.body;
-    let regex = new RegExp(' ', 'g');
-    let slug = post.title.replace(regex, '-').toLowerCase();
-    let userId = 1; // the user id should be a variable based on logged in.
-
-    // Insert into posts first, paragraphs table depends on it
-    let q = `INSERT INTO posts(title, slug, details, users_id)
-    VALUES("${post.title}", "${slug}", "${post.details}", ${userId});`;
-
-    connection.query(q, function (err, result) {
-        if (err) {
-            console.log(err);
-        }
-    });
-
-    // Grab all the paragraphs
-    let pgraphs = [];
-    let keys = Object.keys(post);
-    for (let i = 2; i < keys.length; i++) {
-        if (keys[i].slice(0, 7) === "content") {
-            pgraphs.push(post[keys[i]]);
-        }
-    }
-    // Grab count of previous article count to insert
-    let count = parseInt(post.articleCount);
-    for (let i = 0; i < pgraphs.length; i++) {
-        let q = `INSERT INTO paragraphs(content, place, posts_id)
-        VALUES("${pgraphs[i]}", ${i}, ${count + 1});`;
-        connection.query(q, function (err, result) {
-            if (err) {
-                console.log(err);
-            }
-        });
-    }
-    res.redirect("/articles", { title: "Articles" });
 });
 
 // Must be at end for all other routes because of only one response for HTTP.
