@@ -66,9 +66,8 @@ app.get("/articles/new", (req, res) => {
 app.post("/articles", (req, res) => {
 
     let post = req.body;
-    let space = new RegExp(' ', 'g');
-    let escape = escapeHtml(post.title);
-    let slug = escape.replace(space, '-').toLowerCase();
+    let dashed = post.title.replace(/\s/g, '-').toLowerCase();
+    let slug = dashed.replace(/[^\w\-]/g, '');
     let userId = 1; // the user id should be a variable based on logged in.
 
     // Insert into posts first, paragraphs table depends on it
