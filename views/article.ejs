@@ -15,21 +15,17 @@
         
         <article>
 
+            <% for (let i = 0; i < post.length; i++) { %>
+
             <section>
 
                 <p>
-                    <%- content %>
+                    <%- post[i].content %>
                 </p>
 
             </section>
 
-            <section>
-                
-                <p>More content here if needed. Add inputs to create the sections. For each new paragraph, add blank spaces in between
-                    the paragraphs and concat as one string with the spaces.
-                </p>
-
-            </section>
+            <%  }  %>
 
         </article>
 

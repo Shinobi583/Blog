@@ -66,8 +66,9 @@ app.get("/articles/new", (req, res) => {
 app.post("/articles", (req, res) => {
 
     let post = req.body;
-    let regex = new RegExp(' ', 'g');
-    let slug = post.title.replace(regex, '-').toLowerCase();
+    let space = new RegExp(' ', 'g');
+    let escape = escapeHtml(post.title);
+    let slug = escape.replace(space, '-').toLowerCase();
     let userId = 1; // the user id should be a variable based on logged in.
 
     // Insert into posts first, paragraphs table depends on it
@@ -127,8 +128,8 @@ app.get("/articles/:article", (req, res) => {
             res.render("error", { title: "Can't find page" });
         }
         else {
-            let post = result[0];
-            res.render("article", { ...post, title: post.title });
+            let post = result;
+            res.render("article", { post: post, title: post[0].title, details: post[0].details });
         }
     });
 });
@@ -181,5 +182,7 @@ function escapeHtml(unsafe) {
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/'/g, "&#039;")
+        .replace(/\\/g, "&bsol;")
+        .replace(/\?/g, "&quest;");
 }
