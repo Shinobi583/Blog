@@ -58,6 +58,11 @@ app.get("/articles", (req, res) => {
     });
 });
 
+app.get("/articles/new", (req, res) => {
+
+    res.render("new-article", { title: "New Article" });
+});
+
 app.post("/articles", (req, res) => {
 
     let post = req.body;
@@ -75,41 +80,35 @@ app.post("/articles", (req, res) => {
         }
     });
 
-    // Grab all the paragraphs
+    // Grab all the paragraphs and escape quotes
     let pgraphs = [];
     let keys = Object.keys(post);
     for (let i = 2; i < keys.length; i++) {
         if (keys[i].slice(0, 7) === "content") {
-            pgraphs.push(post[keys[i]]);
+            let escaped = escapeHtml(post[keys[i]]);
+            pgraphs.push(escaped);
         }
     }
-    // Grab count of previous article count to insert
-    let count = parseInt(post.articleCount);
-    for (let i = 0; i < pgraphs.length; i++) {
-        let q = `INSERT INTO paragraphs(content, place, posts_id)
-        VALUES("${pgraphs[i]}", ${i}, ${count + 1});`;
-        connection.query(q, function (err, result) {
-            if (err) {
-                console.log(err);
-            }
-        });
-    }
-    res.redirect("/articles", { title: "Articles" });
-});
-
-app.get("/articles/new", (req, res) => {
-
-    let q = `SELECT COUNT(*) AS COUNT FROM posts;`;
-    connection.query(q, function (err, result) {
+    // Grab recent article id
+    let maxid;
+    connection.query("SELECT MAX(id) AS maxid FROM posts;", function (err, result) {
         if (err) {
             console.log(err);
-            res.render("error", { title: "Can't find page" });
         }
         else {
-            let count = result[0].COUNT;
-            res.render("new-article", { count: count, title: "New Article" });
+            maxid = result[0].maxid;
+            for (let i = 0; i < pgraphs.length; i++) {
+                let qu = `INSERT INTO paragraphs(content, place, posts_id)
+                VALUES("${pgraphs[i]}", ${i}, ${maxid});`;
+                connection.query(qu, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }
         }
     });
+    res.redirect("/articles");
 });
 
 app.get("/articles/:article", (req, res) => {
@@ -175,3 +174,12 @@ app.get('*', (req, res) => {
 app.listen(3000, () => {
     console.log("Server has started on port 3000");
 });
+
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
