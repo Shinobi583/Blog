@@ -153,9 +153,9 @@ app.get("/search", (req, res) => {
     });
 });
 
-/* Change login to be something for admin only? Perhaps on the bottom of page or something. */
+/* Have login be something for admin only. Perhaps on the bottom of page or something. */
 
-app.get("/login", (req, res) => {
+app.get("/secret/login", (req, res) => {
 
     res.render("login", { title: "Login" });
 });
