@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("partials/header") %>
+
+    <body id="edit-article">
+
+        <%- include("partials/navbar") %>
+
+            <main>
+                <form action="/articles/:article" method="post"> <!--Only post or get? not patch?-->
+                    <section>
+                        <!--Title-->
+                        <label for="">Title of Article</label>
+                        <input type="text" name="title" value="<%= title %>" required>
+                        <!--Description/Details-->
+                        <label for="">Short description of Article</label>
+                        <input type="text" name="details" value="<%= details %>" required>
+                    </section>
+
+                    <article>
+
+                        <section>
+                            <label for="">Main Content</label>
+                            <textarea id="content" class="paragraph" name="content0" cols="60" rows="10" placeholder="<%- post[0].content %>"
+                                required></textarea>
+                        </section>
+
+                        <button id="add-paragraph">Add Paragraph</button>
+
+                        <% for (let i = 1; i < post.length; i++) { %>
+                        <section>
+                            <textarea class="paragraph" name="content<%= i %>" cols="60" rows="10"><%- post[i].content %></textarea>
+                            <button class="del-paragraph">Delete Paragraph</button>
+                            <button class="del-section">Delete Section</button>
+                        </section>
+                        <% } %>
+                    </article>
+
+                    <input id="submit" type="submit" value="Update Article">
+                </form>
+            </main>
+
+        <%- include("partials/footer") %>
+        <script src="/js/edit-article.mjs" type="module"></script>
+    </body>
+
+</html>

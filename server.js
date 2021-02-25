@@ -58,6 +58,7 @@ app.get("/articles", (req, res) => {
     });
 });
 
+// permission should be required for new entry and post
 app.get("/articles/new", (req, res) => {
 
     res.render("new-article", { title: "New Article" });
@@ -133,6 +134,39 @@ app.get("/articles/:article", (req, res) => {
     });
 });
 
+// permission should be required for these article routes
+app.get("/articles/:article/edit", (req, res) => {
+
+    let slug = req.params.article;
+
+    let q = `SELECT title, details, paragraphs.content AS content
+    FROM posts
+    JOIN paragraphs
+    ON posts.id = paragraphs.posts_id
+    WHERE slug = "${slug}";`;
+
+    connection.query(q, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.render("error", { title: "Can't find page" });
+        }
+        else {
+            let post = result;
+            res.render("edit-article", { post: post, title: post[0].title, details: post[0].details });
+        }
+    });
+});
+
+app.patch("/articles/:article", (req, res) => {
+
+    res.redirect("/articles");
+});
+
+app.delete("/articles/:article", (req, res) => {
+
+    res.redirect("/articles");
+});
+
 app.get("/search", (req, res) => {
 
     let { q } = req.query;
@@ -153,7 +187,7 @@ app.get("/search", (req, res) => {
     });
 });
 
-/* Have login be something for admin only. Perhaps on the bottom of page or something. */
+/* Have login be something for admin only. */
 
 app.get("/secret/login", (req, res) => {
 

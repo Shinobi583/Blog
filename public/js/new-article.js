@@ -13,12 +13,8 @@ document.querySelector("article").addEventListener("click", function (e) {
     }
 });
 
-// Escape special characters
-
-let pNum = 2;
-
-
 function addParagraphAndSection() {
+    let pNum = document.querySelectorAll("textarea").length;
     let newSection = document.createElement("section");
     let newTextArea = document.createElement("textarea");
     let deleteSect = document.createElement("button");
@@ -26,7 +22,7 @@ function addParagraphAndSection() {
     let deletePara = document.createElement("button");
     deletePara.textContent = "Delete Paragraph";
     
-    setAttributes(newTextArea, { "class": "paragraph", "name": `content${pNum++}`, "cols": "60", "rows": "10" });
+    setAttributes(newTextArea, { "class": "paragraph", "name": `content${pNum}`, "cols": "60", "rows": "10" });
     setAttributes(deleteSect, { "class": "del-section" });
     setAttributes(deletePara, { "class": "del-paragraph" });
 
@@ -39,12 +35,21 @@ function deleteParagraph(btn) {
     let pgraph = btn.previousElementSibling;
     pgraph.remove();
     btn.remove();
+    updateParagraphs();
+}
+
+function updateParagraphs() {
+    let pgraphs = document.querySelectorAll("textarea");
+    for (let i = 0, pNum = pgraphs.length; i < pNum; i++) {
+        pgraphs[i].name = `content${i}`;
+    }
 }
 
 function deleteSection(btn) {
     let sect = btn.parentElement;
     sect.remove();
     btn.remove();
+    updateParagraphs();
 }
 
 function setAttributes(el, attr) {
