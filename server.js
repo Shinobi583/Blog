@@ -2,10 +2,12 @@ const tempFile = require("./temp-pass-file");
 
 const express = require("express");
 const app = express();
+const methodOverride = require("method-override");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const path = require("path");
 
+app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 
@@ -67,13 +69,14 @@ app.get("/articles/new", (req, res) => {
 app.post("/articles", (req, res) => {
 
     let post = req.body;
-    let dashed = post.title.replace(/\s/g, '-').toLowerCase();
+    let { title, details } = req.body;
+    let dashed = title.trim().replace(/\s/g, '-').toLowerCase();
     let slug = dashed.replace(/[^\w\-]/g, '');
     let userId = 1; // the user id should be a variable based on logged in.
 
     // Insert into posts first, paragraphs table depends on it
     let q = `INSERT INTO posts(title, slug, details, users_id)
-    VALUES("${post.title}", "${slug}", "${post.details}", ${userId});`;
+    VALUES("${title}", "${slug}", "${details}", ${userId});`;
 
     connection.query(q, function (err, result) {
         if (err) {
@@ -129,7 +132,12 @@ app.get("/articles/:article", (req, res) => {
         }
         else {
             let post = result;
-            res.render("article", { post: post, title: post[0].title, details: post[0].details });
+            if (post.length) {
+                res.render("article", { post: post, title: post[0].title, details: post[0].details });
+            }
+            else {
+                res.render("error", { title: "Can't find page" });
+            }
         }
     });
 });
@@ -139,7 +147,7 @@ app.get("/articles/:article/edit", (req, res) => {
 
     let slug = req.params.article;
 
-    let q = `SELECT title, details, paragraphs.content AS content
+    let q = `SELECT title, details, slug, paragraphs.content AS content
     FROM posts
     JOIN paragraphs
     ON posts.id = paragraphs.posts_id
@@ -152,13 +160,64 @@ app.get("/articles/:article/edit", (req, res) => {
         }
         else {
             let post = result;
-            res.render("edit-article", { post: post, title: post[0].title, details: post[0].details });
+            res.render("edit-article", { post: post, title: post[0].title, details: post[0].details, slug: slug });
         }
     });
 });
 
 app.patch("/articles/:article", (req, res) => {
 
+    let slug = req.params.article;
+    let post = req.body;
+    let { title, details } = req.body;
+    let dashed = title.trim().replace(/\s/g, '-').toLowerCase();
+    let newSlug = dashed.replace(/[^\w\-]/g, '');
+
+    connection.query(`SELECT id, place FROM posts JOIN paragraphs ON posts.id = paragraphs.posts_id WHERE slug = "${slug}";`, function (err, result) {
+        let id = result[0].id;
+        let placeIndex = result.length - 1;
+
+        let q = `UPDATE posts SET title = "${title}", slug = "${newSlug}", details = "${details}"
+        WHERE id = ${id};`;
+        connection.query(q, function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+        });
+
+        let pgraphs = [];
+        let keys = Object.keys(post);
+        for (let i = 0; i < keys.length; i++) {
+            if (keys[i].slice(0, 7) === "content") {
+                let escaped = escapeHtml(post[keys[i]]);
+                pgraphs.push(escaped);
+            }
+        }
+        for (let i = 0, len = pgraphs.length; i < len; i++) {
+            let qu = '';
+            if (placeIndex < i) {
+                qu = `INSERT INTO paragraphs(content, place, posts_id)
+                VALUES("${pgraphs[i]}", ${i}, ${id});`;
+            }
+            else {
+                qu = `UPDATE paragraphs SET content = "${pgraphs[i]}", place = ${i}
+                WHERE posts_id = ${id} AND place = ${i}`;
+            }
+            connection.query(qu, function (err, result) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+            if ((i + 1 === len) && (len <= placeIndex)) {
+                // delete remaining paragraphs based on new update
+                connection.query(`DELETE FROM paragraphs WHERE posts_id = ${id} AND place > ${i}`, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        }
+    });
     res.redirect("/articles");
 });
 

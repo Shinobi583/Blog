@@ -8,7 +8,7 @@
         <%- include("partials/navbar") %>
 
             <main>
-                <form action="/articles/:article" method="post"> <!--Only post or get? not patch?-->
+                <form action="/articles/<%= slug %>?_method=PATCH" method="post">
                     <section>
                         <!--Title-->
                         <label for="">Title of Article</label>
@@ -22,8 +22,8 @@
 
                         <section>
                             <label for="">Main Content</label>
-                            <textarea id="content" class="paragraph" name="content0" cols="60" rows="10" placeholder="<%- post[0].content %>"
-                                required></textarea>
+                            <textarea id="content" class="paragraph" name="content0" cols="60" rows="10"
+                                required><%- post[0].content %></textarea>
                         </section>
 
                         <button id="add-paragraph">Add Paragraph</button>
@@ -42,7 +42,7 @@
             </main>
 
         <%- include("partials/footer") %>
-        <script src="/js/edit-article.mjs" type="module"></script>
+        <script src="/js/new-article.js"></script>
     </body>
 
 </html>
