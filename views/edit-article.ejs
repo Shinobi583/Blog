@@ -39,6 +39,10 @@
 
                     <input id="submit" type="submit" value="Update Article">
                 </form>
+
+                <form action="/articles/<%= slug %>?_method=DELETE" method="post">
+                    <input type="submit" value="Delete Article">
+                </form>
             </main>
 
         <%- include("partials/footer") %>

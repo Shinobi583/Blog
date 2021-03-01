@@ -223,6 +223,15 @@ app.patch("/articles/:article", (req, res) => {
 
 app.delete("/articles/:article", (req, res) => {
 
+    let slug = req.params.article;
+
+    let q = `DELETE FROM posts WHERE slug = "${slug}";`;
+
+    connection.query(q, function (err, result) {
+        if (err) {
+            console.log(err);
+        }
+    });
     res.redirect("/articles");
 });
 
