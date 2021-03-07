@@ -4,11 +4,10 @@ const express = require("express");
 const app = express();
 const methodOverride = require("method-override");
 const mysql = require("mysql");
-const bodyParser = require("body-parser");
 const path = require("path");
 
 app.use(methodOverride("_method"));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 
 app.set("view engine", "ejs");
