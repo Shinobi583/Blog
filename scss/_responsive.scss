@@ -2,16 +2,19 @@
 @media all and (min-width: 640px) {
 
     .article-link {
-        margin-bottom: 1rem;
         width: 75%;
-    }
-
-    .article {
-        padding: 0;
     }
 
     .d-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    #article {
+        
+        article {
+            margin: 1rem auto;
+            width: 75%;
+        }
     }
 }
 
@@ -83,18 +86,20 @@
     }
 
     .article-link {
-        margin-bottom: 1rem;
         width: 50%;
-    }
-
-    .article {
-        padding: 0;
     }
 
     #login {
 
         input[type=submit] {
             margin: 0.5rem 0 0.5rem 0;
+        }
+    }
+
+    #article {
+
+        article {
+            width: 50%;
         }
     }
 }

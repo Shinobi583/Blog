@@ -20,38 +20,24 @@ html, body {
     }
 }
 
-.topic-link {
-    color: $topic-link-color;
-    background: $topic-card-bg;
-    text-decoration: none;
-    border-radius: 2rem;
-    padding: 0.5rem;
-
-    &:hover {
-        background: $topic-hover;
-        box-shadow: 0px 6px 2px 3px rgba(0, 0, 0, 0.09), 0 3px 8px rgba(0, 0, 0, 0.09), 0 4px 13px rgba(0, 0, 0, 0.13);
-    }
-}
-
 .article-link {
     color: $article-link-color;
-    background: $article-card-bg;
     text-decoration: none;
     border-radius: 0.4rem;
     margin-bottom: 2rem;
-    width: 100%;
-    height: fit-content;
-    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
     justify-self: center;
+    overflow: hidden;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
 
-    &:hover {
-        background: $article-hover;
-        box-shadow: 0px 6px 2px 3px rgba(0, 0, 0, 0.09), 0 3px 8px rgba(0, 0, 0, 0.09), 0 4px 13px rgba(0, 0, 0, 0.13);
-    }
+    @include link-effect;
 }
 
 .article {
-    padding: 0.5rem;
+    padding: 1rem;
 }
 
 .d-grid {
@@ -61,19 +47,19 @@ html, body {
 main {
     margin: 10px;
     text-align: center;
-    color: #FFF;
+    color: $article-link-color;
 }
 
 
 #home {
 
     .menu-nav-link:first-of-type {
-        color: $topic-link-color;
+        color: $nav-hover-color;
 
         &:after {
             display:block;
             content: '';
-            border-bottom: solid 3px $topic-hover;
+            border-bottom: solid 3px $nav-underline;
             transform: scaleX(1);
         }
     }
@@ -82,12 +68,12 @@ main {
 #articles {
 
     .menu-nav-link:nth-of-type(2) {
-        color: $topic-link-color;
+        color: $nav-hover-color;
 
         &:after {
             display:block;
             content: '';
-            border-bottom: solid 3px $topic-hover;
+            border-bottom: solid 3px $nav-underline;
             transform: scaleX(1);
         }
     }
