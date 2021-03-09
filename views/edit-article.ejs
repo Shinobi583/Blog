@@ -23,14 +23,14 @@
                         <section>
                             <label for="">Main Content</label>
                             <textarea id="content" class="paragraph" name="content0" cols="60" rows="10"
-                                required><%- post[0].content %></textarea>
+                                required><%- content[0] %></textarea>
                         </section>
 
                         <button id="add-paragraph">Add Paragraph</button>
 
-                        <% for (let i = 1; i < post.length; i++) { %>
+                        <% for (let i = 1; i < content.length; i++) { %>
                         <section>
-                            <textarea class="paragraph" name="content<%= i %>" cols="60" rows="10"><%- post[i].content %></textarea>
+                            <textarea class="paragraph" name="content<%= i %>" cols="60" rows="10"><%- content[i] %></textarea>
                             <button class="del-paragraph">Delete Paragraph</button>
                             <button class="del-section">Delete Section</button>
                         </section>
