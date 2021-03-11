@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const methodOverride = require("method-override");
 const path = require("path");
-const Article = require("./models/article");
+const AppError = require("./AppError");
+const Article = require("./models/Article");
 
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
@@ -22,25 +23,25 @@ mongoose.connection.on("error", console.error.bind(console, "connection error:")
 mongoose.connection.once("open", () => { console.log("Database connected."); });
 
 
-app.get('/', async (req, res) => {
+app.get('/', async (req, res, next) => {
 
     try {
         const posts = await Article.find({});
         res.render("home", { posts, title: "The Great Divide" });
     }
     catch (err) {
-        res.render("error", { title: "Can't find page" });
+        return next(new AppError());
     }
 });
 
-app.get("/articles", async (req, res) => {
+app.get("/articles", async (req, res, next) => {
 
     try {
         const posts = await Article.find({});
         res.render("all-articles", { posts, title: "Articles" });
     }
     catch (err) {
-        res.render("error", { title: "Can't find page" });
+        return next(new AppError());
     }
 });
 
@@ -50,7 +51,7 @@ app.get("/articles/new", (req, res) => {
     res.render("new-article", { title: "New Article" });
 });
 
-app.post("/articles", async (req, res) => {
+app.post("/articles", async (req, res, next) => {
 
     const post = req.body;
     const { title, details } = req.body;
@@ -75,11 +76,11 @@ app.post("/articles", async (req, res) => {
         res.redirect("/articles");
     }
     catch (err) {
-        res.render("error", { title: "Couldn't Update" });
+        return next(new AppError("Couldn't add to the database! Check to make sure you filled in all required fields!"));
     }
 });
 
-app.get("/articles/:article", async (req, res) => {
+app.get("/articles/:article", async (req, res, next) => {
 
     const slug = req.params.article;
     try {
@@ -88,12 +89,12 @@ app.get("/articles/:article", async (req, res) => {
         res.render("article", { post, title, details, content });
     }
     catch (err) {
-        res.render("error", { title: "Can't find page" });
+        return next(new AppError());
     }
 });
 
 // permission should be required for these article routes
-app.get("/articles/:article/edit", async (req, res) => {
+app.get("/articles/:article/edit", async (req, res, next) => {
 
     const slug = req.params.article;
     try {
@@ -102,11 +103,11 @@ app.get("/articles/:article/edit", async (req, res) => {
         res.render("edit-article", { post, title, details, slug, content });
     }
     catch (err) {
-        res.render("error", { title: "Can't find page" });
+        return next(new AppError());
     }
 });
 
-app.patch("/articles/:article", async (req, res) => {
+app.patch("/articles/:article", async (req, res, next) => {
 
     const slug = req.params.article;
     const post = req.body;
@@ -128,11 +129,11 @@ app.patch("/articles/:article", async (req, res) => {
         res.redirect("/articles");
     }
     catch (err) {
-        res.render("error", { title: "Couldn't Update" });
+        return next(new AppError("Couldn't update the database! Check to make sure you filled in all required fields!"));
     }
 });
 
-app.delete("/articles/:article", async (req, res) => {
+app.delete("/articles/:article", async (req, res, next) => {
 
     const slug = req.params.article;
     try {
@@ -141,16 +142,16 @@ app.delete("/articles/:article", async (req, res) => {
             res.redirect("/articles");
         }
         else {
-            res.render("error", { title: "Couldn't Delete" });
+            return next(new AppError("Couldn't find the article to delete!"));
         }
     }
     catch (err) {
-        res.render("error", { title: "Couldn't Delete" });
+        return next(new AppError("Couldn't find the article to delete!"));
     }
 });
 
 // Change below to be able to find 'like' just like SQL. Not exact.
-app.get("/search", async (req, res) => {
+app.get("/search", async (req, res, next) => {
 
     const { q } = req.query;
     try {
@@ -158,7 +159,7 @@ app.get("/search", async (req, res) => {
         res.render("search", { posts, title: "The Great Divide | Search" });
     }
     catch (err) {
-        res.render("error", { title: "Can't find page" });
+        return next(new AppError());
     }
 });
 
@@ -175,9 +176,14 @@ app.post("/login", (req, res) => {
 });
 
 // Must be at end for all other routes because of only one response for HTTP.
-app.get('*', (req, res) => {
+app.get('*', (req, res, next) => {
+    return next(new AppError());
+});
 
-    res.render("error", { title: "Can't find page" });
+// Error handler
+app.use((err, req, res, next) => {
+    const { message } = err;
+    res.render("error", { title: "Can't find page", message });
 });
 
 app.listen(3000, () => {
