@@ -176,7 +176,7 @@ app.post("/login", (req, res) => {
     res.redirect('/');
 });
 
-// Must be at end for all other routes because of only one response for HTTP.
+// Must be at end for all other routes
 app.get('*', (req, res, next) => {
     return next(new AppError());
 });

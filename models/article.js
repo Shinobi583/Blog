@@ -11,7 +11,10 @@ const ArticleSchema = new Schema({
         required: true
         // make unique
     },
-    details: String,
+    details: {
+        type: String,
+        required: true
+    },
     content: {
         type: [String],
         required: true

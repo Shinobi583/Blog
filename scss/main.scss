@@ -108,6 +108,10 @@ main {
     font-size: inherit;
 }
 
+.invalid {
+    outline: 2px solid red;
+}
+
 .warning {
     color: red;
 }
