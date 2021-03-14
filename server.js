@@ -2,8 +2,9 @@ const express = require("express");
 const app = express();
 const methodOverride = require("method-override");
 const path = require("path");
-const AppError = require("./AppError");
+const AppError = require("./src/AppError");
 const Article = require("./models/Article");
+const { escapeHtml } = require("./src/utils");
 
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
@@ -189,14 +190,3 @@ app.use((err, req, res, next) => {
 app.listen(3000, () => {
     console.log("Server has started on port 3000");
 });
-
-function escapeHtml(unsafe) {
-    return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;")
-        .replace(/\\/g, "&bsol;")
-        .replace(/\?/g, "&quest;");
-}
