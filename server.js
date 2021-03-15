@@ -126,7 +126,7 @@ app.patch("/articles/:article", async (req, res, next) => {
     }
 
     try {
-        await Article.findOneAndUpdate({ slug: slug }, { title, details, slug: newSlug, content: pgraphs }, { runValidators: true });
+        await Article.findOneAndUpdate({ slug: slug }, { title, details, slug: newSlug, content: pgraphs, updatedAt: Date.now() }, { runValidators: true });
         res.redirect("/articles");
     }
     catch (err) {

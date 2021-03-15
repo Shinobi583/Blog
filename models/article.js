@@ -8,8 +8,8 @@ const ArticleSchema = new Schema({
     },
     slug: {
         type: String,
-        required: true
-        // make unique
+        required: true,
+        unique: true
     },
     details: {
         type: String,
@@ -18,9 +18,15 @@ const ArticleSchema = new Schema({
     content: {
         type: [String],
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
     }
-    // add created at and updated at with Date.
-    // add user id
 });
 
 module.exports = mongoose.model("Article", ArticleSchema);
