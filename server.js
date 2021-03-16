@@ -4,6 +4,7 @@ const methodOverride = require("method-override");
 const path = require("path");
 const AppError = require("./src/AppError");
 const Article = require("./models/Article");
+const User = require("./models/User");
 const { escapeHtml } = require("./src/utils");
 
 app.use(methodOverride("_method"));
@@ -47,33 +48,39 @@ app.get("/articles", async (req, res, next) => {
 });
 
 // permission should be required for new entry and post
-app.get("/articles/new", (req, res) => {
+app.get("/users/:id/articles/new", async (req, res) => {
 
-    res.render("articles/new-article", { title: "New Article" });
+    const { id } = req.params;
+    const user = await User.findById(id);
+    res.render("articles/new-article", { title: "New Article", user });
 });
 
-app.post("/articles", async (req, res, next) => {
+app.post("/users/:id/articles", async (req, res, next) => {
 
     const post = req.body;
     const { title, details } = req.body;
     const dashed = title.trim().replace(/\s/g, '-').toLowerCase();
     const slug = dashed.replace(/[^\w\-]/g, '');
-    // add the user id based on logged in.
-
-    // Grab all the paragraphs and escape quotes
-    let pgraphs = [];
-    let keys = Object.keys(post);
-    for (let i = 0; i < keys.length; i++) {
-        if (keys[i].slice(0, 7) === "content") {
-            let escaped = escapeHtml(post[keys[i]]);
-            pgraphs.push(escaped);
-        }
-    }
-
-    // Create instance and insert all content at once
-    const article = new Article({ title, details, slug, content: pgraphs });
+    const { id } = req.params;
     try {
+        // Find user
+        const user = await User.findById(id);
+
+        // Grab all the paragraphs and escape html
+        let pgraphs = [];
+        let keys = Object.keys(post);
+        for (let i = 0; i < keys.length; i++) {
+            if (keys[i].slice(0, 7) === "content") {
+                let escaped = escapeHtml(post[keys[i]]);
+                pgraphs.push(escaped);
+            }
+        }
+
+        // Create instance and insert all content
+        const article = new Article({ title, details, slug, content: pgraphs, user_id: user });
+        user.articles.push(article);
         await article.save({ validateBeforeSave: true });
+        await user.save({ validateBeforeSave: true });
         res.redirect("/articles");
     }
     catch (err) {
@@ -81,20 +88,21 @@ app.post("/articles", async (req, res, next) => {
     }
 });
 
+// Add link for edit article if validated user, else just show the article
 app.get("/articles/:article", async (req, res, next) => {
 
     const slug = req.params.article;
     try {
-        const post = await Article.findOne({ slug: slug });
-        const { title, details, content } = post;
-        res.render("articles/article", { post, title, details, content });
+        const post = await Article.findOne({ slug: slug }).populate("user_id", "name");
+        const { title, details, content, user_id } = post;
+        res.render("articles/article", { post, title, slug, details, content, user_id });
     }
     catch (err) {
         return next(new AppError());
     }
 });
 
-// permission should be required for these article routes
+// permission should be required for these next 3 article routes
 app.get("/articles/:article/edit", async (req, res, next) => {
 
     const slug = req.params.article;
@@ -151,15 +159,16 @@ app.delete("/articles/:article", async (req, res, next) => {
     }
 });
 
-// Change below to be able to find 'like' just like SQL. Not exact.
 app.get("/search", async (req, res, next) => {
 
     const { q } = req.query;
+    const regex = new RegExp(q, "i");
     try {
-        const posts = await Article.find({ title: q });
+        const posts = await Article.find({ title: regex });
         res.render("search", { posts, title: "The Great Divide | Search" });
     }
     catch (err) {
+        console.log(err);
         return next(new AppError());
     }
 });

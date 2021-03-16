@@ -21,6 +21,12 @@
             <%  }  %>
         </article>
 
+        <p>Written by: <%= user_id.name %></p>
+        <section class="d-grid">
+            <a href="/articles/<%= slug %>/edit" class="article-link">
+                <div class="article">Edit Article</div>
+            </a>
+        </section>
     </main>
 
     <%- include("../partials/footer") %>

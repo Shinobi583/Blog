@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const User = require("./User");
 const Schema = mongoose.Schema;
 
 const ArticleSchema = new Schema({
@@ -21,7 +22,8 @@ const ArticleSchema = new Schema({
     },
     user_id: {
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        required: true
     },
     createdAt: {
         type: Date,
@@ -31,6 +33,12 @@ const ArticleSchema = new Schema({
         type: Date,
         default: Date.now
     }
+});
+
+ArticleSchema.post("findOneAndDelete", async function (article) {
+    const user = await User.findById(article.user_id);
+    user.articles.pull(article._id);
+    user.save();
 });
 
 module.exports = mongoose.model("Article", ArticleSchema);
