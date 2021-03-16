@@ -39,7 +39,7 @@ app.get("/articles", async (req, res, next) => {
 
     try {
         const posts = await Article.find({});
-        res.render("all-articles", { posts, title: "Articles" });
+        res.render("articles/all-articles", { posts, title: "Articles" });
     }
     catch (err) {
         return next(new AppError());
@@ -49,7 +49,7 @@ app.get("/articles", async (req, res, next) => {
 // permission should be required for new entry and post
 app.get("/articles/new", (req, res) => {
 
-    res.render("new-article", { title: "New Article" });
+    res.render("articles/new-article", { title: "New Article" });
 });
 
 app.post("/articles", async (req, res, next) => {
@@ -87,7 +87,7 @@ app.get("/articles/:article", async (req, res, next) => {
     try {
         const post = await Article.findOne({ slug: slug });
         const { title, details, content } = post;
-        res.render("article", { post, title, details, content });
+        res.render("articles/article", { post, title, details, content });
     }
     catch (err) {
         return next(new AppError());
@@ -101,7 +101,7 @@ app.get("/articles/:article/edit", async (req, res, next) => {
     try {
         const post = await Article.findOne({ slug: slug });
         const { title, details, content } = post;
-        res.render("edit-article", { post, title, details, slug, content });
+        res.render("articles/edit-article", { post, title, details, slug, content });
     }
     catch (err) {
         return next(new AppError());
