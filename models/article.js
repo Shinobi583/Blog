@@ -19,6 +19,10 @@ const ArticleSchema = new Schema({
         type: [String],
         required: true
     },
+    user_id: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
     createdAt: {
         type: Date,
         default: Date.now
