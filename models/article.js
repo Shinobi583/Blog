@@ -36,9 +36,11 @@ const ArticleSchema = new Schema({
 });
 
 ArticleSchema.post("findOneAndDelete", async function (article) {
-    const user = await User.findById(article.user_id);
-    user.articles.pull(article._id);
-    user.save();
+    if (article) {
+        const user = await User.findById(article.user_id);
+        user.articles.pull(article._id);
+        user.save();
+    }
 });
 
 module.exports = mongoose.model("Article", ArticleSchema);
