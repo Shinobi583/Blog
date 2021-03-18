@@ -30,7 +30,7 @@ mongoose.connection.once("open", () => { console.log("Database connected."); });
 app.get('/', async (req, res, next) => {
 
     try {
-        const posts = await Article.find({});
+        const posts = await Article.find({}).sort({ updatedAt: -1 }).limit(7);
         res.render("home", { posts, title: "The Great Divide" });
     }
     catch (err) {
