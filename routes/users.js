@@ -1,12 +1,25 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 const AppError = require("../src/AppError");
 const User = require("../models/User");
 const Article = require("../models/Article");
-const { escapeHtml } = require("../src/utils");
+const { escapeHtml, validateUser } = require("../src/utils");
 
-// permission should be required for all these routes
-router.get("/:id/articles/new", async (req, res) => {
+router.get("/:id", validateUser, async (req, res, next) => {
+
+    const { id } = req.params;
+    try {
+        const user = await User.findById(id);
+        const { name, username } = user;
+        res.render("user", { title: "Your Dashboard", name, username });
+    }
+    catch (err) {
+        return next(new AppError());
+    }
+});
+
+router.get("/:id/articles/new", validateUser, async (req, res) => {
 
     const { id } = req.params;
     try {
@@ -18,7 +31,7 @@ router.get("/:id/articles/new", async (req, res) => {
     }
 });
 
-router.post("/:id/articles", async (req, res, next) => {
+router.post("/:id/articles", validateUser, async (req, res, next) => {
 
     const post = req.body;
     const { title, details } = req.body;
@@ -44,15 +57,44 @@ router.post("/:id/articles", async (req, res, next) => {
         user.articles.push(article);
         await article.save({ validateBeforeSave: true });
         await user.save({ validateBeforeSave: true });
-        res.redirect("/articles");
+        req.flash("success", "Successfully created an Article!");
+        res.redirect('/');
     }
     catch (err) {
         return next(new AppError("Couldn't add to the database! Check to make sure you filled in all required fields!"));
     }
 });
 
-router.post("/", (req, res) => {
+// Login post
+router.post('/', async (req, res) => {
 
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
+        const result = await bcrypt.compare(password, user.passwordHash);
+        if (result) {
+            req.session.loggedIn = true;
+            req.session.userId = user._id;
+            req.flash("success", "Successfully logged in!");
+            res.redirect(`/users/${user._id}`);
+        }
+        else {
+            req.flash("error", "Incorrect Username and/or Password");
+            res.redirect('/');
+        }
+    }
+    catch (err) {
+        req.flash("error", "Incorrect Username and/or Password");
+        res.redirect('/');
+    }
+});
+
+// Logout post. Only for admin right now
+router.post("/:id", validateUser, (req, res) => {
+
+    req.session.loggedIn = false;
+    req.session.userId = '';
+    req.flash("success", "Successfully logged out!");
     res.redirect('/');
 });
 

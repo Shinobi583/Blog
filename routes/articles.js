@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const AppError = require("../src/AppError");
 const Article = require("../models/Article");
-const { escapeHtml } = require("../src/utils");
+const { escapeHtml, validateUser } = require("../src/utils");
 
 router.get("/", async (req, res, next) => {
 
@@ -15,7 +15,6 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-// Add link for edit article if validated user, else just show the article
 router.get("/:article", async (req, res, next) => {
 
     const slug = req.params.article;
@@ -29,8 +28,7 @@ router.get("/:article", async (req, res, next) => {
     }
 });
 
-// permission should be required for these next 3 article routes
-router.get("/:article/edit", async (req, res, next) => {
+router.get("/:article/edit", validateUser, async (req, res, next) => {
 
     const slug = req.params.article;
     try {
@@ -43,7 +41,7 @@ router.get("/:article/edit", async (req, res, next) => {
     }
 });
 
-router.patch("/:article", async (req, res, next) => {
+router.patch("/:article", validateUser, async (req, res, next) => {
 
     const slug = req.params.article;
     const post = req.body;
@@ -62,20 +60,22 @@ router.patch("/:article", async (req, res, next) => {
 
     try {
         await Article.findOneAndUpdate({ slug: slug }, { title, details, slug: newSlug, content: pgraphs, updatedAt: Date.now() }, { runValidators: true });
-        res.redirect("/articles");
+        req.flash("success", `Successfully updated "${title}"!`);
+        res.redirect("/");
     }
     catch (err) {
         return next(new AppError("Couldn't update the database! Check to make sure you filled in all required fields!"));
     }
 });
 
-router.delete("/:article", async (req, res, next) => {
+router.delete("/:article", validateUser, async (req, res, next) => {
 
     const slug = req.params.article;
     try {
         const result = await Article.findOneAndDelete({ slug: slug });
         if (result) {
-            res.redirect("/articles");
+            req.flash("success", `Successfully deleted "${result.title}"!`);
+            res.redirect("/");
         }
         else {
             return next(new AppError("Couldn't find the article to delete!"));

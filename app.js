@@ -3,25 +3,46 @@ const app = express();
 const methodOverride = require("method-override");
 const path = require("path");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const flash = require("connect-flash");
 const AppError = require("./src/AppError");
 const Article = require("./models/Article");
 const articleRoutes = require("./routes/articles");
 const userRoutes = require("./routes/users");
 
-app.use(methodOverride("_method"));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + "/public"));
-app.use("/articles", articleRoutes);
-app.use("/users", userRoutes);
-
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
-mongoose.set('useFindAndModify', false);
+app.use(methodOverride("_method"));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname + "/public"));
+const sessionConfig = {
+    secret: "temp", // change to be environment variable
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 1000 * 60 * 60 * 24, // one day
+        maxAge: 1000 * 60 * 60 * 24
+    }
+    // store: mongo store soon
+};
+app.use(session(sessionConfig));
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    res.locals.loggedIn = req.session.loggedIn;
+    res.locals.userId = req.session.userId;
+    return next();
+});
+app.use("/articles", articleRoutes);
+app.use("/users", userRoutes);
+
 mongoose.connect("mongodb://localhost:27017/blog", {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 mongoose.connection.on("error", console.error.bind(console, "connection error:"));
 mongoose.connection.once("open", () => { console.log("Database connected."); });
@@ -47,7 +68,6 @@ app.get("/search", async (req, res, next) => {
         res.render("search", { posts, title: "The Great Divide | Search" });
     }
     catch (err) {
-        console.log(err);
         return next(new AppError());
     }
 });

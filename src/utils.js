@@ -1,3 +1,5 @@
+const AppError = require('./AppError');
+
 function escapeHtml(unsafe) {
     return unsafe
         .replace(/&/g, "&amp;")
@@ -8,5 +10,14 @@ function escapeHtml(unsafe) {
         .replace(/\\/g, "&bsol;")
         .replace(/\?/g, "&quest;");
 }
+function validateUser(req, res, next) {
+    let loggedIn = req.session.loggedIn;
+    if (loggedIn) {
+        return next();
+    }
+    else {
+        return next(new AppError());
+    }
+}
 
-module.exports = { escapeHtml };
+module.exports = { escapeHtml, validateUser };

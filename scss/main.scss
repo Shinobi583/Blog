@@ -103,9 +103,17 @@ main {
     max-width: 500px;
 }
 
+.inputs {
+    font-size: inherit;
+    display: block;
+    margin: auto;
+    width: 90%;
+}
+
 .forms-text {
     height: 1.5rem;
     font-size: inherit;
+    text-align: center;
 }
 
 .invalid {

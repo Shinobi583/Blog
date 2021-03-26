@@ -16,6 +16,12 @@
           <input type="search" placeholder="Search Articles" name="q">
           <button type="submit">Search</button>
         </form>
+        <% if (loggedIn) { %>
+          <a href="/users/<%= userId %>" class="log-in-btn">Dashboard</a>
+          <form action="/users/<%= userId %>" method="POST">
+            <button class="log-in-btn">Log out</button>
+          </form>
+        <% } %>
       </div>
 
     </div>

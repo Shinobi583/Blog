@@ -36,7 +36,7 @@ function addParagraphAndSection() {
     const deletePara = document.createElement("button");
     deletePara.textContent = "Delete Paragraph";
     
-    setAttributes(newTextArea, { "class": "paragraph", "name": `content${pNum}`, "cols": "60", "rows": "10" });
+    setAttributes(newTextArea, { "class": "paragraph inputs", "name": `content${pNum}`, "rows": "12" });
     setAttributes(deleteSect, { "class": "del-section" });
     setAttributes(deletePara, { "class": "del-paragraph" });
 
