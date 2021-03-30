@@ -1,5 +1,6 @@
 const AppError = require("../src/AppError");
 const Article = require("../models/Article");
+const Img = require("../models/Img");
 const { escapeHtml } = require("../src/utils");
 
 async function index(req, res, next) {
@@ -16,9 +17,13 @@ async function showArticle(req, res, next) {
 
     const slug = req.params.article;
     try {
-        const post = await Article.findOne({ slug: slug }).populate("user_id", "name");
-        const { title, details, content, user_id } = post;
-        res.render("articles/article", { post, title, slug, details, content, user_id });
+        const post = await Article.findOne({ slug: slug }).populate("user_id", "name").populate("imgs");
+        const { title, details, imgs, content, user_id } = post;
+        let contentNum = content.length;
+        if (imgs.length > contentNum) {
+            contentNum = imgs.length;
+        }
+        res.render("articles/article", { post, title, slug, details, contentNum, imgs, content, user_id });
     }
     catch (err) {
         return next(new AppError());
@@ -28,9 +33,13 @@ async function editForm(req, res, next) {
 
     const slug = req.params.article;
     try {
-        const post = await Article.findOne({ slug: slug });
-        const { title, details, content } = post;
-        res.render("articles/edit-article", { post, title, details, slug, content });
+        const post = await Article.findOne({ slug: slug }).populate("imgs");
+        const { title, details, imgs, content } = post;
+        let contentNum = content.length;
+        if (imgs.length > contentNum) {
+            contentNum = imgs.length;
+        }
+        res.render("articles/edit-article", { post, title, slug, details, contentNum, imgs, content });
     }
     catch (err) {
         return next(new AppError());
@@ -45,16 +54,21 @@ async function update(req, res, next) {
     const newSlug = dashed.replace(/[^\w\-]/g, '');
 
     let pgraphs = [];
+    let imgs = [];
     let keys = Object.keys(post);
-    for (let i = 0; i < keys.length; i++) {
-        if (keys[i].slice(0, 7) === "content") {
-            let escaped = escapeHtml(post[keys[i]]);
-            pgraphs.push(escaped);
-        }
-    }
-
     try {
-        await Article.findOneAndUpdate({ slug: slug }, { title, details, slug: newSlug, content: pgraphs, updatedAt: Date.now() }, { runValidators: true });
+        for (let i = 0; i < keys.length; i++) {
+            if (keys[i].slice(0, 7) === "content") {
+                let escaped = escapeHtml(post[keys[i]]);
+                pgraphs.push(escaped);
+            }
+            if (keys[i].slice(0, 3) === "img" && post[keys[i]] !== '') {
+                const img = new Img({ url: post[keys[i]], owner: post[keys[i + 1]] });
+                imgs.push(img);
+                await img.save({ validateBeforeSave: true });
+            }
+        }
+        await Article.findOneAndUpdate({ slug: slug }, { title, details, slug: newSlug, imgs, content: pgraphs, updatedAt: Date.now() }, { runValidators: true });
         req.flash("success", `Successfully updated "${title}"!`);
         res.redirect("/");
     }

@@ -28,5 +28,6 @@ UserSchema.post("findOneAndDelete", async function (user) {
         Article.deleteMany({ _id: { $in: user.articles } });
     }
 });
+const User = mongoose.model("User", UserSchema);
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = User;

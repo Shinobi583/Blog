@@ -14,9 +14,15 @@
         </section>
         
         <article>
-            <% for (let i = 0; i < content.length; i++) { %>
-            <section>
-                <p><%- content[i] %></p>
+            <% for (let i = 0; i < contentNum; i++) { %>
+            <section class="article-section">
+                <% if (imgs[i]) { %>
+                    <img src="<%= imgs[i].url %>" alt="image">
+                    <figcaption>Image taken by: <%= imgs[i].owner %> on <a href="https://www.unsplash.com">Unsplash</a></figcaption>
+                <% }
+                if (content[i]) { %>
+                    <p><%- content[i] %></p>
+                <% } %>
             </section>
             <%  }  %>
         </article>

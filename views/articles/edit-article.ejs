@@ -20,17 +20,35 @@
 
                     <article>
 
-                        <section>
-                            <label for="">Main Content</label>
+                        <section class="article-section">
+                            <p>Main Content</p>
+                            <label for="">Add Image</label>
+                            <input type="text" name="img0" class="img forms-text" placeholder="URL"
+                            <% if (imgs[0]) { %>
+                                value="<%= imgs[0].url %>"
+                            <% } %>>
+                            <input type="text" name="owner0" class="owner forms-text" placeholder="Owner of Image"
+                            <% if (imgs[0]) { %>
+                                value="<%= imgs[0].owner %>"
+                            <% } %>>
                             <textarea id="content" class="paragraph inputs" name="content0" rows="12"
                                 required><%- content[0] %></textarea>
                         </section>
 
                         <button id="add-paragraph">Add Paragraph</button>
 
-                        <% for (let i = 1; i < content.length; i++) { %>
-                        <section>
-                            <textarea class="paragraph inputs" name="content<%= i %>" rows="12"><%- content[i] %></textarea>
+                        <% for (let i = 1; i < contentNum; i++) { %>
+                        <section class="article-section">
+                            <label for="">Add Image</label>
+                            <input type="text" name="img<%= i %>" class="img forms-text" placeholder="URL"
+                            <% if (imgs[i]) { %>
+                                value="<%= imgs[i].url %>"
+                            <% } %>>
+                            <input type="text" name="owner<%= i %>" class="owner forms-text" placeholder="Owner of Image"
+                            <% if (imgs[i]) { %>
+                                value="<%= imgs[i].owner %>"
+                            <% } %>>
+                            <textarea class="paragraph inputs" name="content<%= i %>" rows="12"><% if (content[i]) { %><%- content[i] %><% } %></textarea>
                             <button class="del-paragraph">Delete Paragraph</button>
                             <button class="del-section">Delete Section</button>
                         </section>

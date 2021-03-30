@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Img = require("./Img");
 const User = require("./User");
 const Schema = mongoose.Schema;
 
@@ -16,6 +17,12 @@ const ArticleSchema = new Schema({
         type: String,
         required: true
     },
+    imgs: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Img"
+        }
+    ],
     content: {
         type: [String],
         required: true
@@ -35,12 +42,29 @@ const ArticleSchema = new Schema({
     }
 });
 
-ArticleSchema.post("findOneAndDelete", async function (article) {
+ArticleSchema.post("findOneAndDelete", async function (article, next) {
     if (article) {
-        const user = await User.findById(article.user_id);
-        user.articles.pull(article._id);
-        user.save();
+        try {
+            const user = await User.findById(article.user_id);
+            user.articles.pull(article._id);
+            await user.save();
+            await Img.deleteMany({ _id: { $in: article.imgs } });
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 });
+ArticleSchema.post("findOneAndUpdate", async function (article, next) {
+    if (article) {
+        try {
+            await Img.deleteMany({ _id: { $in: article.imgs } });
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+});
+const Article = mongoose.model("Article", ArticleSchema);
 
-module.exports = mongoose.model("Article", ArticleSchema);
+module.exports = Article;

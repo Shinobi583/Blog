@@ -1,6 +1,6 @@
 document.querySelector("#add-paragraph").addEventListener("click", function (e) {
     e.preventDefault();
-    addParagraphAndSection();
+    addSection();
 });
 document.querySelector("article").addEventListener("click", function (e) {
     e.preventDefault();
@@ -27,20 +27,31 @@ document.querySelector("#submit").addEventListener("click", function (e) {
     }
 });
 
-function addParagraphAndSection() {
+function addSection() {
     const pNum = document.querySelectorAll("textarea").length;
+    const iNum = document.querySelectorAll(".img").length;
+    const oNum = document.querySelectorAll(".owner").length;
     const newSection = document.createElement("section");
+    const imgLabel = document.createElement("label");
+    imgLabel.textContent = "Add Image";
+    const addImg = document.createElement("input");
+    addImg.type = "text";
+    const owner = document.createElement("input");
+    owner.type = "text";
     const newTextArea = document.createElement("textarea");
     const deleteSect = document.createElement("button");
     deleteSect.textContent = "Delete Section";
     const deletePara = document.createElement("button");
     deletePara.textContent = "Delete Paragraph";
     
+    setAttributes(newSection, { "class": "article-section" });
+    setAttributes(addImg, { "class": "img forms-text", "name": `img${iNum}`, "placeholder": "URL" });
+    setAttributes(owner, { "class": "owner forms-text", "name": `owner${oNum}`, "placeholder": "Owner of Image" });
     setAttributes(newTextArea, { "class": "paragraph inputs", "name": `content${pNum}`, "rows": "12" });
     setAttributes(deleteSect, { "class": "del-section" });
     setAttributes(deletePara, { "class": "del-paragraph" });
 
-    newSection.append(newTextArea, deletePara, deleteSect);
+    newSection.append(imgLabel, addImg, owner, newTextArea, deletePara, deleteSect);
 
     document.querySelector("article").appendChild(newSection);
 }
@@ -59,11 +70,27 @@ function updateParagraphs() {
     }
 }
 
+function updateImgs() {
+    const imgs = document.querySelectorAll(".img");
+    for (let i = 0, iNum = imgs.length; i < iNum; i++) {
+        imgs[i].name = `img${i}`;
+    }
+}
+
+function updateOwners() {
+    const owners = document.querySelectorAll(".owner");
+    for (let i = 0, oNum = owners.length; i < oNum; i++) {
+        owners[i].name = `owner${i}`;
+    }
+}
+
 function deleteSection(btn) {
     const sect = btn.parentElement;
     sect.remove();
     btn.remove();
     updateParagraphs();
+    updateImgs();
+    updateOwners();
 }
 
 function setAttributes(el, attr) {

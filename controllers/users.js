@@ -1,6 +1,7 @@
 const AppError = require("../src/AppError");
 const User = require("../models/User");
 const Article = require("../models/Article");
+const Img = require("../models/Img");
 const bcrypt = require("bcrypt");
 const { escapeHtml } = require("../src/utils");
 
@@ -38,18 +39,24 @@ async function postArticle(req, res, next) {
         // Find user
         const user = await User.findById(id);
 
-        // Grab all the paragraphs and escape html
+        // Grab all the paragraphs/imgs and escape html
         let pgraphs = [];
+        let imgs = [];
         let keys = Object.keys(post);
         for (let i = 0; i < keys.length; i++) {
             if (keys[i].slice(0, 7) === "content") {
                 let escaped = escapeHtml(post[keys[i]]);
                 pgraphs.push(escaped);
             }
+            if (keys[i].slice(0, 3) === "img" && post[keys[i]] !== '') {
+                const img = new Img({ url: post[keys[i]], owner: post[keys[i + 1]] });
+                imgs.push(img);
+                await img.save({ validateBeforeSave: true });
+            }
         }
 
-        // Create instance and insert all content
-        const article = new Article({ title, details, slug, content: pgraphs, user_id: user });
+        // Create instance and insert content
+        const article = new Article({ title, details, slug, imgs, content: pgraphs, user_id: user });
         user.articles.push(article);
         await article.save({ validateBeforeSave: true });
         await user.save({ validateBeforeSave: true });
