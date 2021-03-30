@@ -9,6 +9,7 @@ const AppError = require("./src/AppError");
 const Article = require("./models/Article");
 const articleRoutes = require("./routes/articles");
 const userRoutes = require("./routes/users");
+const mongoSanitize = require('express-mongo-sanitize');
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
@@ -16,6 +17,7 @@ app.set("views", path.join(__dirname, "/views"));
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
+app.use(mongoSanitize());
 const sessionConfig = {
     secret: "temp", // change to be environment variable
     resave: false,

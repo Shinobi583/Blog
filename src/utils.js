@@ -10,6 +10,7 @@ function escapeHtml(unsafe) {
         .replace(/\\/g, "&bsol;")
         .replace(/\?/g, "&quest;");
 }
+// Middleware
 function validateUser(req, res, next) {
     let loggedIn = req.session.loggedIn;
     if (loggedIn) {
