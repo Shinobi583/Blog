@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
 const express = require("express");
 const app = express();
 const methodOverride = require("method-override");
@@ -19,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(mongoSanitize());
 const sessionConfig = {
-    secret: "temp", // change to be environment variable
+    secret: process.env.secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
