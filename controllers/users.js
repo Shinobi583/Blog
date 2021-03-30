@@ -11,7 +11,7 @@ async function dashboard(req, res, next) {
     try {
         const user = await User.findById(id);
         const { name, username } = user;
-        res.render("user", { title: "Your Dashboard", name, username });
+        res.render("users/user", { title: "Your Dashboard", name, username });
     }
     catch (err) {
         return next(new AppError());
@@ -67,6 +67,9 @@ async function postArticle(req, res, next) {
         return next(new AppError("Couldn't add to the database! Check to make sure you filled in all required fields!"));
     }
 }
+function getLogin(req, res) {
+    res.render("users/login", { title: "Login" });
+}
 async function login(req, res) {
 
     try {
@@ -101,6 +104,7 @@ module.exports = {
     dashboard,
     newArticleForm,
     postArticle,
+    getLogin,
     login,
     logout
 };

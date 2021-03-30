@@ -9,6 +9,8 @@ router.get("/:id/articles/new", validateUser, users.newArticleForm);
 
 router.post("/:id/articles", validateUser, users.postArticle);
 
+router.get("/secret/login", users.getLogin);
+
 // Login post
 router.post('/', users.login);
 

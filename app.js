@@ -77,11 +77,6 @@ app.get("/search", async (req, res, next) => {
     }
 });
 
-app.get("/secret/login", (req, res) => {
-
-    res.render("login", { title: "Login" });
-});
-
 // Must be at end for all other routes
 app.get('*', (req, res, next) => {
     return next(new AppError());
