@@ -8,11 +8,12 @@ const path = require("path");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const flash = require("connect-flash");
+const helmet = require("helmet");
+const mongoSanitize = require('express-mongo-sanitize');
 const AppError = require("./src/AppError");
 const Article = require("./models/Article");
 const articleRoutes = require("./routes/articles");
 const userRoutes = require("./routes/users");
-const mongoSanitize = require('express-mongo-sanitize');
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
@@ -20,6 +21,15 @@ app.set("views", path.join(__dirname, "/views"));
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: [],
+        scriptSrc: ["'self'"],
+        fontSrc: ["'self'"],
+        styleSrc: ["'self'"],
+        imgSrc: ["'self'", "blob:", "data:", "https://images.unsplash.com"]
+    }
+}));
 app.use(mongoSanitize());
 const sessionConfig = {
     secret: process.env.secret,
