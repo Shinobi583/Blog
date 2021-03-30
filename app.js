@@ -23,6 +23,7 @@ app.use(express.static(__dirname + "/public"));
 app.use(mongoSanitize());
 const sessionConfig = {
     secret: process.env.secret,
+    name: "sessId.usid",
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -85,7 +86,7 @@ app.get('*', (req, res, next) => {
 // Error handler
 app.use((err, req, res, next) => {
     const { message } = err;
-    res.render("error", { title: "Can't find page", message });
+    res.render("error", { title: "Can't find page", message, err });
 });
 
 app.listen(3000, () => {
