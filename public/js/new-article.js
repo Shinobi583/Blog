@@ -45,11 +45,12 @@ function addSection() {
     deletePara.textContent = "Delete Paragraph";
     
     setAttributes(newSection, { "class": "article-section" });
+    setAttributes(imgLabel, { "class": "d-block" });
     setAttributes(addImg, { "class": "img forms-text", "name": `img${iNum}`, "placeholder": "URL" });
     setAttributes(owner, { "class": "owner forms-text", "name": `owner${oNum}`, "placeholder": "Owner of Image" });
     setAttributes(newTextArea, { "class": "paragraph inputs", "name": `content${pNum}`, "rows": "12" });
-    setAttributes(deleteSect, { "class": "del-section" });
-    setAttributes(deletePara, { "class": "del-paragraph" });
+    setAttributes(deleteSect, { "class": "del-section deleteBtn formBtn" });
+    setAttributes(deletePara, { "class": "del-paragraph deleteBtn formBtn" });
 
     newSection.append(imgLabel, addImg, owner, newTextArea, deletePara, deleteSect);
 

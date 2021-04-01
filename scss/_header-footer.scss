@@ -1,4 +1,3 @@
-/* Mobile first! */
 @import "./mixins-variables";
 
 header {
@@ -184,10 +183,4 @@ nav {
             @include transition-ease;
         }
     }
-}
-
-footer {
-    background: $nav-bg;
-    color: #FFF;
-    text-align: center;
 }

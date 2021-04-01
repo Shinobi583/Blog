@@ -68,7 +68,7 @@ app.get('/', async (req, res, next) => {
 
     try {
         const posts = await Article.find({}).sort({ updatedAt: -1 }).limit(7);
-        res.render("home", { posts, title: "The Great Divide" });
+        res.render("home", { posts, title: "The Ripple Effect" });
     }
     catch (err) {
         return next(new AppError());
@@ -81,7 +81,7 @@ app.get("/search", async (req, res, next) => {
     const regex = new RegExp(q, "i");
     try {
         const posts = await Article.find({ title: regex });
-        res.render("search", { posts, title: "The Great Divide | Search" });
+        res.render("search", { posts, title: "The Ripple Effect | Search" });
     }
     catch (err) {
         return next(new AppError());

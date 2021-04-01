@@ -21,8 +21,8 @@
                     <article>
 
                         <section class="article-section">
-                            <p>Main Content</p>
-                            <label for="">Add Image</label>
+                            <h2>Main Content</h2>
+                            <label class="d-block" for="">Add Image</label>
                             <input type="text" name="img0" class="img forms-text" placeholder="URL"
                             <% if (imgs[0]) { %>
                                 value="<%= imgs[0].url %>"
@@ -35,11 +35,11 @@
                                 required><%- content[0] %></textarea>
                         </section>
 
-                        <button id="add-paragraph">Add Paragraph</button>
+                        <button id="add-paragraph" class="formBtn">Add Paragraph</button>
 
                         <% for (let i = 1; i < contentNum; i++) { %>
                         <section class="article-section">
-                            <label for="">Add Image</label>
+                            <label class="d-block" for="">Add Image</label>
                             <input type="text" name="img<%= i %>" class="img forms-text" placeholder="URL"
                             <% if (imgs[i]) { %>
                                 value="<%= imgs[i].url %>"
@@ -49,21 +49,19 @@
                                 value="<%= imgs[i].owner %>"
                             <% } %>>
                             <textarea class="paragraph inputs" name="content<%= i %>" rows="12"><% if (content[i]) { %><%- content[i] %><% } %></textarea>
-                            <button class="del-paragraph">Delete Paragraph</button>
-                            <button class="del-section">Delete Section</button>
+                            <button class="del-paragraph deleteBtn formBtn">Delete Paragraph</button>
+                            <button class="del-section deleteBtn formBtn">Delete Section</button>
                         </section>
                         <% } %>
                     </article>
 
-                    <input id="submit" type="submit" value="Update Article">
+                    <input id="submit" type="submit" class="updateBtn formBtn" value="Update Article">
                 </form>
 
                 <form action="/articles/<%= slug %>?_method=DELETE" method="post">
-                    <input type="submit" value="Delete Article">
+                    <input type="submit" class="deleteBtn formBtn" value="Delete Article">
                 </form>
             </main>
-
-        <%- include("../partials/footer") %>
         <script src="/js/new-article.js"></script>
     </body>
 

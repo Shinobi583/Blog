@@ -1,4 +1,3 @@
-/* Mobile first! */
 @import "./header-footer";
 
 html, body {
@@ -12,7 +11,7 @@ html, body {
 }
 
 .hero {
-    text-shadow: 1px 2px 2px #000;
+    text-shadow: 1px 1px 3px #000;
 
     h1 {
         letter-spacing: 1rem;
@@ -40,14 +39,9 @@ html, body {
     padding: 1rem;
 }
 
-.d-grid {
-    display: grid;
-}
-
 main {
     margin: 10px;
     text-align: center;
-    color: $article-link-color;
 }
 
 
@@ -80,6 +74,19 @@ main {
 }
 
 #article {
+
+    img {
+        width: 100%;
+    }
+
+    figcaption {
+        font-style: italic;
+        font-size: 0.85rem;
+
+        a {
+            text-decoration: none;
+        }
+    }
     
     p {
         white-space: pre-line;
@@ -105,6 +112,44 @@ main {
     display: grid;
     margin: auto;
     max-width: 500px;
+}
+
+#add-paragraph {
+    background: green;
+    border: 2px outset darkgreen;
+}
+
+.postBtn {
+    background: green;
+    margin-top: 3rem;
+    border: 2px outset darkgreen;
+}
+
+.updateBtn {
+    background: #a7a92e;
+    margin-top: 3rem;
+    border: 2px outset #a2a42d;
+}
+
+.deleteBtn {
+    background: red;
+    margin-top: 3rem;
+    border: 2px outset darkred;
+}
+
+.formBtn {
+    color: #FFF;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.d-grid {
+    display: grid;
+}
+
+.d-block {
+    display: block;
 }
 
 .inputs {
