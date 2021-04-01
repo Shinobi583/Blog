@@ -58,7 +58,9 @@
                     <input id="submit" type="submit" class="updateBtn formBtn" value="Update Article">
                 </form>
 
-                <form action="/articles/<%= slug %>?_method=DELETE" method="post">
+                <span class="d-none">Are you sure?</span>
+                <button id="del-article" class="deleteBtn formBtn">Delete Article</button>
+                <form id="deleteForm" class="d-none" action="/articles/<%= slug %>?_method=DELETE" method="post">
                     <input type="submit" class="deleteBtn formBtn" value="Delete Article">
                 </form>
             </main>

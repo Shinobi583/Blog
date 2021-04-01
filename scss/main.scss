@@ -119,6 +119,10 @@ main {
     border: 2px outset darkgreen;
 }
 
+#del-article {
+    margin-top: 3rem;
+}
+
 .postBtn {
     background: green;
     margin-top: 3rem;
@@ -133,7 +137,6 @@ main {
 
 .deleteBtn {
     background: red;
-    margin-top: 3rem;
     border: 2px outset darkred;
 }
 
@@ -141,7 +144,16 @@ main {
     color: #FFF;
     padding: 0.5rem;
     border-radius: 0.5rem;
+    outline: none;
     cursor: pointer;
+}
+
+.d-none {
+    display: none;
+}
+
+.d-inline {
+    display: inline;
 }
 
 .d-grid {

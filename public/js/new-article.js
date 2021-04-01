@@ -26,6 +26,10 @@ document.querySelector("#submit").addEventListener("click", function (e) {
         }
     }
 });
+document.querySelector("#del-article").addEventListener("click", function (e) {
+    const form = document.querySelector("#deleteForm");
+    showDelForm(this, form);
+});
 
 function addSection() {
     const pNum = document.querySelectorAll("textarea").length;
@@ -105,4 +109,18 @@ function checkValidity(input) {
         return false;
     }
     return true;
+}
+
+function showDelForm(btn, form) {
+    btn.previousElementSibling.classList.toggle("d-none");
+    form.classList.toggle("d-none");
+    form.classList.toggle("d-inline");
+    btn.classList.toggle("deleteBtn");
+    btn.classList.toggle("postBtn");
+    if (btn.textContent === "Cancel Deleting") {
+        btn.textContent = "Delete Article";
+    }
+    else {
+        btn.textContent = "Cancel Deleting";
+    }
 }
