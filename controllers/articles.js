@@ -80,7 +80,7 @@ async function deleteArticle(req, res, next) {
 
     const slug = req.params.article;
     try {
-        const result = await Article.findOneAndDelete({ slug: slug });
+        const result = await Article.findOneAndDelete({ slug });
         if (result) {
             req.flash("success", `Successfully deleted "${result.title}"!`);
             res.redirect("/");
