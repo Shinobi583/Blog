@@ -6,7 +6,9 @@ const app = express();
 const methodOverride = require("method-override");
 const path = require("path");
 const mongoose = require("mongoose");
+const dbURL = process.env.DB_URL; //"mongodb://localhost:27017/blog"
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const helmet = require("helmet");
 const mongoSanitize = require('express-mongo-sanitize');
@@ -31,16 +33,21 @@ app.use(helmet.contentSecurityPolicy({
     }
 }));
 app.use(mongoSanitize());
+const storeConfig = {
+    mongoUrl: dbURL,
+    secret: process.env.storeSecret,
+    touchAfter: 60 * 60 * 24 // uses seconds
+};
 const sessionConfig = {
-    secret: process.env.secret,
+    secret: process.env.sessionSecret,
     name: "sessId.usid",
     resave: false,
     saveUninitialized: true,
     cookie: {
         expires: Date.now() + 1000 * 60 * 60 * 24, // one day
         maxAge: 1000 * 60 * 60 * 24
-    }
-    // store: mongo store soon
+    },
+    store: MongoStore.create(storeConfig)
 };
 app.use(session(sessionConfig));
 app.use(flash());
@@ -54,7 +61,7 @@ app.use((req, res, next) => {
 app.use("/articles", articleRoutes);
 app.use("/users", userRoutes);
 
-mongoose.connect("mongodb://localhost:27017/blog", {
+mongoose.connect(dbURL, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
