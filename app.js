@@ -14,7 +14,7 @@ const flash = require("connect-flash");
 const helmet = require("helmet");
 const mongoSanitize = require('express-mongo-sanitize');
 const AppError = require("./src/AppError");
-const Article = require("./models/Article");
+const Article = require("./models/article");
 const articleRoutes = require("./routes/articles");
 const userRoutes = require("./routes/users");
 
