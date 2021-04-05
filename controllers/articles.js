@@ -1,5 +1,5 @@
 const AppError = require("../src/AppError");
-const Article = require("../models/Article");
+const Article = require("../models/article");
 const Img = require("../models/Img");
 const { escapeHtml } = require("../src/utils");
 
