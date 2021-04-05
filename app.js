@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 const express = require("express");
 const app = express();
+const port = process.env.PORT || 3000;
 const methodOverride = require("method-override");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -106,6 +107,6 @@ app.use((err, req, res, next) => {
     res.render("error", { title: "Can't find page", message, err });
 });
 
-app.listen(3000, () => {
-    console.log("Server has started on port 3000");
+app.listen(port, () => {
+    console.log(`Server has started on port ${port}`);
 });

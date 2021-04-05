@@ -1,8 +1,11 @@
 {
-  "name": "thegreatdivide",
+  "name": "therippleeffect",
   "version": "1.0.0",
-  "description": "Science Blogging Website",
+  "description": "A relaxed blog for anyone who wants to learn",
   "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
   "author": "Chace DeLoach",
   "license": "MIT",
   "dependencies": {
