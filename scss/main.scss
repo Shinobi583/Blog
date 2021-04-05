@@ -90,6 +90,7 @@ main {
     
     p {
         white-space: pre-line;
+        line-height: 2;
     }
 }
 
@@ -167,6 +168,7 @@ main {
 .inputs {
     font-size: inherit;
     display: block;
+    text-align: center;
     margin: auto;
     width: 90%;
 }
