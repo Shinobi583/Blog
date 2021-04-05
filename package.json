@@ -2,6 +2,9 @@
   "name": "therippleeffect",
   "version": "1.0.0",
   "description": "A relaxed blog for anyone who wants to learn",
+  "engines": {
+    "node": "14.15.4"
+  },
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
