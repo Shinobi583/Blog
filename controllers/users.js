@@ -1,6 +1,6 @@
 const AppError = require("../src/AppError");
 const User = require("../models/User");
-const Article = require("../models/Article");
+const Article = require("../models/article");
 const Img = require("../models/Img");
 const bcrypt = require("bcrypt");
 const { escapeHtml } = require("../src/utils");
