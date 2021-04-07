@@ -1,8 +1,9 @@
 @import "./mixins-variables";
 
 header {
-    position: sticky;
+    position: fixed;
     height: 3rem;
+    width: 100%;
     z-index: 2;
     background: $nav-bg;
 }
