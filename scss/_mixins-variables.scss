@@ -17,7 +17,6 @@
 
     &:hover:after {
         transform: scaleX(1);
-        @include transition-ease;
     }
 }
 

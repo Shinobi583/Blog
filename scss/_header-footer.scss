@@ -15,7 +15,7 @@ header {
     top: 1rem;
     height: 20px;
     width: 28px;
-    padding: 5px;
+    padding: 10px;
     cursor: pointer;
 
     &-burger {
@@ -34,7 +34,6 @@ header {
             width: 28px;
             height: 3px;
             background: white;
-            @include transition-ease;
         }
 
         &::after {
@@ -44,7 +43,6 @@ header {
             width: 20px;
             height: 3px;
             background: white;
-            @include transition-ease;
         }
 
         &.open {
@@ -67,7 +65,6 @@ header {
 
 nav {
 
-    @include transition-ease;
     visibility: hidden;
     font-size: 1.5rem;
     height: inherit;
@@ -86,10 +83,11 @@ nav {
     justify-content: center;
     position: relative;
     z-index: 2;
+    transform: translateY(100vh);
 
     &.open {
+        margin-top: 1rem;
         transform: translateY(0);
-        @include transition-ease;
         background: $nav-bg;
     }
         
@@ -109,7 +107,6 @@ nav {
 
         &.open {
             transform: translateX(0);
-            @include transition-ease;
         }
     }
 }
